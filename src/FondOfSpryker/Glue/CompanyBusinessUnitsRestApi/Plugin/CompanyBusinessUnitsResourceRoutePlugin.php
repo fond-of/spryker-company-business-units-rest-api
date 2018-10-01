@@ -1,0 +1,82 @@
+<?php
+
+namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Plugin;
+
+use FondOfSpryker\Glue\CompaniesRestApi\CompaniesRestApiConfig;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
+use Generated\Shared\Transfer\RestCompanyBusinessUnitsAttributesTransfer;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceWithParentPluginInterface;
+use Spryker\Glue\Kernel\AbstractPlugin;
+
+class CompanyBusinessUnitsResourceRoutePlugin extends AbstractPlugin implements ResourceRoutePluginInterface, ResourceWithParentPluginInterface
+{
+    /**
+     * @api
+     *
+     * {@inheritdoc}
+     *
+     * @param \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface $resourceRouteCollection
+     *
+     * @return \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface
+     */
+    public function configure(ResourceRouteCollectionInterface $resourceRouteCollection
+    ): ResourceRouteCollectionInterface
+    {
+        $resourceRouteCollection
+            ->addGet(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_GET, true)
+            ->addPatch(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_PATCH, true)
+            ->addPost(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_POST, true);
+
+        return $resourceRouteCollection;
+    }
+
+    /**
+     * @api
+     *
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getResourceType(): string
+    {
+        return CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS;
+    }
+
+    /**
+     * @api
+     *
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getController(): string
+    {
+        return CompanyBusinessUnitsRestApiConfig::CONTROLLER_COMPANY_BUSINESS_UNITS;
+    }
+
+    /**
+     * @api
+     *
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getResourceAttributesClassName(): string
+    {
+        return RestCompanyBusinessUnitsAttributesTransfer::class;
+    }
+
+    /**
+     * @api
+     *
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function getParentResourceType(): string
+    {
+        return CompaniesRestApiConfig::RESOURCE_COMPANIES;
+    }
+}

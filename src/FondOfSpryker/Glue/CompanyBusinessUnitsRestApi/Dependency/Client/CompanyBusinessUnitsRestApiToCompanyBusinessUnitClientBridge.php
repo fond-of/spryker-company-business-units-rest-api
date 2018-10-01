@@ -2,19 +2,19 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client;
 
+use FondOfSpryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface;
 use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
-use Spryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface;
 
 class CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientBridge implements CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface
 {
     /**
-     * @var \Spryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface
+     * @var \FondOfSpryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface
      */
     protected $companyBusinessUnitClient;
 
     /**
-     * @param \Spryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface $companyBusinessUnitClient
+     * @param \FondOfSpryker\Client\CompanyBusinessUnit\CompanyBusinessUnitClientInterface $companyBusinessUnitClient
      */
     public function __construct(CompanyBusinessUnitClientInterface $companyBusinessUnitClient)
     {
@@ -29,7 +29,7 @@ class CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientBridge implements Co
     public function findCompanyBusinessUnitByExternalReference(CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
     ): CompanyBusinessUnitResponseTransfer
     {
-        // TODO: Implement findCompanyBusinessUnitByExternalReference() method.
+        return $this->companyBusinessUnitClient->findCompanyBusinessUnitByExternalReference($companyBusinessUnitTransfer);
     }
 
     /**

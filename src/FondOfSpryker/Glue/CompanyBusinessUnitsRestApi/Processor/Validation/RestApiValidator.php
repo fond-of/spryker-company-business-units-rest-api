@@ -28,7 +28,7 @@ class RestApiValidator implements RestApiValidatorInterface
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
-    public function validateCompanyResponseTransfer(
+    public function validateCompanyBusinessUnitResponseTransfer(
         CompanyBusinessUnitResponseTransfer $companyBusinessUnitResponseTransfer,
         RestRequestInterface $restRequest,
         RestResponseInterface $restResponse
