@@ -2,11 +2,14 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits;
 
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface;
+use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface;
-use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
+use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
+use Generated\Shared\Transfer\RestErrorMessageTransfer;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
@@ -24,9 +27,9 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
     protected $companyBusinessUnitsResourceMapper;
 
     /**
-     * @var \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface
+     * @var \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface
      */
-    protected $companyBusinessUnitClient;
+    protected $companyBusinessUnitsRestApiClient;
 
     /**
      * @var \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface
@@ -41,20 +44,20 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
     /**
      * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface $restResourceBuilder
      * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface $companyBusinessUnitsResourceMapper
-     * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface $companyBusinessUnitClient
+     * @param \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient
      * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface $restApiError
      * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface $restApiValidator
      */
     public function __construct(
         RestResourceBuilderInterface $restResourceBuilder,
         CompanyBusinessUnitsResourceMapperInterface $companyBusinessUnitsResourceMapper,
-        CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface $companyBusinessUnitClient,
+        CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient,
         RestApiErrorInterface $restApiError,
         RestApiValidatorInterface $restApiValidator
     ) {
         $this->restResourceBuilder = $restResourceBuilder;
         $this->companyBusinessUnitsResourceMapper = $companyBusinessUnitsResourceMapper;
-        $this->companyBusinessUnitClient = $companyBusinessUnitClient;
+        $this->companyBusinessUnitsRestApiClient = $companyBusinessUnitsRestApiClient;
         $this->restApiError = $restApiError;
         $this->restApiValidator = $restApiValidator;
     }
@@ -72,23 +75,56 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
             return $this->restApiError->addExternalReferenceMissingError($restResponse);
         }
 
-        $companyBusinessUnitTransfer = (new CompanyBusinessUnitTransfer())->setExternalReference($restRequest->getResource()->getId());
-        $companyBusinessUnitResponseTransfer = $this->companyBusinessUnitClient->findCompanyBusinessUnitByExternalReference($companyBusinessUnitTransfer);
+        $restCompanyBusinessUnitsRequestAttributesTransfer = new RestCompanyBusinessUnitsRequestAttributesTransfer();
+        $restCompanyBusinessUnitsRequestAttributesTransfer->setExternalReference($restRequest->getResource()->getId());
 
-        $restResponse = $this->restApiValidator->validateCompanyBusinessUnitResponseTransfer(
-            $companyBusinessUnitResponseTransfer,
-            $restRequest,
-            $restResponse
-        );
+        $restCompanyBusinessUnitsResponseTransfer = $this->companyBusinessUnitsRestApiClient
+            ->findCompanyBusinessUnitByExternalReference($restCompanyBusinessUnitsRequestAttributesTransfer);
 
-        if (count($restResponse->getErrors()) > 0) {
-            return $restResponse;
+        if (!$restCompanyBusinessUnitsResponseTransfer->getIsSuccess()) {
+            return $this->createLoadCompanyBusinessUnitFailedErrorResponse($restCompanyBusinessUnitsResponseTransfer);
         }
 
-        $companyBusinessUnitsResource = $this->companyBusinessUnitsResourceMapper
-            ->mapCompanyBusinessUnitTransferToRestResource($companyBusinessUnitResponseTransfer->getCompanyBusinessUnitTransfer());
+        return $this->createCompanyBusinessUnitLoadedResponse($restCompanyBusinessUnitsResponseTransfer);
+    }
 
-        $restResponse->addResource($companyBusinessUnitsResource);
+    /**
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
+    protected function createCompanyBusinessUnitLoadedResponse(
+        RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+    ): RestResponseInterface {
+        $restCompanyBusinessUnitsResponseAttributesTransfer = $restCompanyBusinessUnitsResponseTransfer->getRestCompanyBusinessUnitsResponseAttributes();
+
+        $restResource = $this->restResourceBuilder->createRestResource(
+            CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS,
+            $restCompanyBusinessUnitsResponseAttributesTransfer->getExternalReference(),
+            $restCompanyBusinessUnitsResponseAttributesTransfer
+        );
+
+        return $this->restResourceBuilder
+            ->createRestResponse()
+            ->addResource($restResource);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
+    protected function createLoadCompanyBusinessUnitFailedErrorResponse(
+        RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+    ): RestResponseInterface {
+        $restResponse = $this->restResourceBuilder->createRestResponse();
+
+        foreach ($restCompanyBusinessUnitsResponseTransfer->getErrors() as $restCompanyBusinessUnitsErrorTransfer) {
+            $restResponse->addError((new RestErrorMessageTransfer())
+                ->setCode($restCompanyBusinessUnitsErrorTransfer->getCode())
+                ->setStatus($restCompanyBusinessUnitsErrorTransfer->getStatus())
+                ->setDetail($restCompanyBusinessUnitsErrorTransfer->getDetail()));
+        }
 
         return $restResponse;
     }

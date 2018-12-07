@@ -18,6 +18,13 @@ interface RestApiErrorInterface
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
+    public function addParentResourceMissingError(RestResponseInterface $restResponse): RestResponseInterface;
+
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
     public function addCompanyBusinessUnitNotFoundError(RestResponseInterface $restResponse): RestResponseInterface;
 
     /**

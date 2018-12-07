@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi;
 
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReader;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriter;
@@ -14,16 +13,14 @@ use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiE
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidator;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
+use Spryker\Yves\Kernel\ClientResolverAwareTrait;
 
+/**
+ * @method \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface getClient()
+ */
 class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
 {
-    /**
-     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface
-     */
-    public function getCompanyBusinessUnitClient(): CompanyBusinessUnitsRestApiToCompanyBusinessUnitClientInterface
-    {
-        return $this->getProvidedDependency(CompanyBusinessUnitsRestApiDependencyProvider::CLIENT_COMPANY_BUSINESS_UNIT);
-    }
+    use ClientResolverAwareTrait;
 
     /**
      * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface
@@ -33,7 +30,7 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
         return new CompanyBusinessUnitsReader(
             $this->getResourceBuilder(),
             $this->createCompanyBusinessUnitsResourceMapper(),
-            $this->getCompanyBusinessUnitClient(),
+            $this->getClient(),
             $this->createRestApiError(),
             $this->createRestApiValidator()
         );
@@ -47,7 +44,7 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
         return new CompanyBusinessUnitsWriter(
             $this->getResourceBuilder(),
             $this->createCompanyBusinessUnitsResourceMapper(),
-            $this->getCompanyBusinessUnitClient(),
+            $this->getClient(),
             $this->createRestApiError(),
             $this->createRestApiValidator()
         );

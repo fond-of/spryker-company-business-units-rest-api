@@ -46,7 +46,7 @@ class CompanyBusinessUnitsResourceMapper implements CompanyBusinessUnitsResource
             ->fromArray($companyBusinessUnitTransfer->toArray(), true);
 
         return $this->restResourceBuilder->createRestResource(
-            CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANIES,
+            CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS,
             $companyBusinessUnitTransfer->getExternalReference(),
             $restCompaniesResponseAttributesTransfer
         );

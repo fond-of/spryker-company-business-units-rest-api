@@ -29,6 +29,36 @@ class RestApiError implements RestApiErrorInterface
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
+    public function addParentResourceMissingError(RestResponseInterface $restResponse): RestResponseInterface
+    {
+        $restErrorTransfer = (new RestErrorMessageTransfer())
+            ->setCode(CompanyBusinessUnitsRestApiConfig::RESPONSE_CODE_PARENT_RESOURCE_MISSING)
+            ->setStatus(Response::HTTP_BAD_REQUEST)
+            ->setDetail(CompanyBusinessUnitsRestApiConfig::RESPONSE_DETAILS_PARENT_RESOURCE_MISSING);
+
+        return $restResponse->addError($restErrorTransfer);
+    }
+
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
+    public function addParentResourceNotFoundError(RestResponseInterface $restResponse): RestResponseInterface
+    {
+        $restErrorTransfer = (new RestErrorMessageTransfer())
+            ->setCode(CompanyBusinessUnitsRestApiConfig::RESPONSE_CODE_PARENT_RESOURCE_MISSING)
+            ->setStatus(Response::HTTP_BAD_REQUEST)
+            ->setDetail(CompanyBusinessUnitsRestApiConfig::RESPONSE_DETAILS_PARENT_RESOURCE_MISSING);
+
+        return $restResponse->addError($restErrorTransfer);
+    }
+
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
     public function addCompanyBusinessUnitNotFoundError(RestResponseInterface $restResponse): RestResponseInterface
     {
         $restErrorTransfer = (new RestErrorMessageTransfer())

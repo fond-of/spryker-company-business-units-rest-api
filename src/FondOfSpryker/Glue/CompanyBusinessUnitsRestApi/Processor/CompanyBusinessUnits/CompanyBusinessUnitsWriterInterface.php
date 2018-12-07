@@ -2,24 +2,25 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits;
 
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsAttributesTransfer;
+use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
 
 interface CompanyBusinessUnitsWriterInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsAttributesTransfer $restCompanyBusinessUnitsAttributesTransfer
+     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
-    public function createCompanyBusinessUnit(RestCompanyBusinessUnitsAttributesTransfer $restCompanyBusinessUnitsAttributesTransfer): RestResponseInterface;
+    public function createCompanyBusinessUnit(RestRequestInterface $restRequest, RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer): RestResponseInterface;
 
     /**
      * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsAttributesTransfer $restCompanyBusinessUnitsAttributesTransfer
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
-    public function updateCompanyBusinessUnit(RestRequestInterface $restRequest, RestCompanyBusinessUnitsAttributesTransfer $restCompanyBusinessUnitsAttributesTransfer): RestResponseInterface;
+    public function updateCompanyBusinessUnit(RestRequestInterface $restRequest, RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer): RestResponseInterface;
 }
