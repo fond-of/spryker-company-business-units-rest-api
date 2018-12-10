@@ -6,12 +6,8 @@ use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnit
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriter;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriterInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapper;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiError;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidator;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
 use Spryker\Yves\Kernel\ClientResolverAwareTrait;
 
@@ -29,10 +25,8 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
     {
         return new CompanyBusinessUnitsReader(
             $this->getResourceBuilder(),
-            $this->createCompanyBusinessUnitsResourceMapper(),
             $this->getClient(),
-            $this->createRestApiError(),
-            $this->createRestApiValidator()
+            $this->createRestApiError()
         );
     }
 
@@ -43,19 +37,9 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
     {
         return new CompanyBusinessUnitsWriter(
             $this->getResourceBuilder(),
-            $this->createCompanyBusinessUnitsResourceMapper(),
             $this->getClient(),
-            $this->createRestApiError(),
-            $this->createRestApiValidator()
+            $this->createRestApiError()
         );
-    }
-
-    /**
-     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface
-     */
-    public function createCompanyBusinessUnitsResourceMapper(): CompanyBusinessUnitsResourceMapperInterface
-    {
-        return new CompanyBusinessUnitsResourceMapper($this->getResourceBuilder());
     }
 
     /**
@@ -64,13 +48,5 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
     public function createRestApiError(): RestApiErrorInterface
     {
         return new RestApiError();
-    }
-
-    /**
-     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface
-     */
-    public function createRestApiValidator(): RestApiValidatorInterface
-    {
-        return new RestApiValidator($this->createRestApiError());
     }
 }

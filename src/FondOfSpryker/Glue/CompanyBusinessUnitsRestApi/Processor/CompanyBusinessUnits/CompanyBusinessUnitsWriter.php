@@ -4,9 +4,7 @@ namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusine
 
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
@@ -23,11 +21,6 @@ class CompanyBusinessUnitsWriter implements CompanyBusinessUnitsWriterInterface
     protected $restResourceBuilder;
 
     /**
-     * @var \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface
-     */
-    protected $companyBusinessUnitsResourceMapper;
-
-    /**
      * @var \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface
      */
     protected $companyBusinessUnitsRestApiClient;
@@ -38,29 +31,18 @@ class CompanyBusinessUnitsWriter implements CompanyBusinessUnitsWriterInterface
     protected $restApiError;
 
     /**
-     * @var \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface
-     */
-    protected $restApiValidator;
-
-    /**
      * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface $restResourceBuilder
-     * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Mapper\CompanyBusinessUnitsResourceMapperInterface $companyBusinessUnitsResourceMapper
      * @param \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient
      * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface $restApiError
-     * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiValidatorInterface $restApiValidator
      */
     public function __construct(
         RestResourceBuilderInterface $restResourceBuilder,
-        CompanyBusinessUnitsResourceMapperInterface $companyBusinessUnitsResourceMapper,
         CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient,
-        RestApiErrorInterface $restApiError,
-        RestApiValidatorInterface $restApiValidator
+        RestApiErrorInterface $restApiError
     ) {
         $this->restResourceBuilder = $restResourceBuilder;
-        $this->companyBusinessUnitsResourceMapper = $companyBusinessUnitsResourceMapper;
         $this->companyBusinessUnitsRestApiClient = $companyBusinessUnitsRestApiClient;
         $this->restApiError = $restApiError;
-        $this->restApiValidator = $restApiValidator;
     }
 
     /**

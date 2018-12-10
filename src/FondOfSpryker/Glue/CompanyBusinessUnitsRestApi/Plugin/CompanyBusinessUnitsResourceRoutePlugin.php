@@ -2,7 +2,6 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Plugin;
 
-use FondOfSpryker\Glue\CompaniesRestApi\CompaniesRestApiConfig;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface;
@@ -66,17 +65,5 @@ class CompanyBusinessUnitsResourceRoutePlugin extends AbstractPlugin implements 
     public function getResourceAttributesClassName(): string
     {
         return RestCompanyBusinessUnitsRequestAttributesTransfer::class;
-    }
-
-    /**
-     * @api
-     *
-     * {@inheritdoc}
-     *
-     * @return string
-     */
-    public function getParentResourceType(): string
-    {
-        return CompaniesRestApiConfig::RESOURCE_COMPANIES;
     }
 }
