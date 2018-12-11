@@ -8,7 +8,7 @@ interface CompanyBusinessUnitsRestApiRepositoryInterface
 {
     /**
      * Specification:
-     *  - Retrieve a company business unit by CompanyBusinessUnitTransfer::externalReference in the transfer
+     *  - Retrieve a company business unit by externalReference
      *
      * @api
      *
