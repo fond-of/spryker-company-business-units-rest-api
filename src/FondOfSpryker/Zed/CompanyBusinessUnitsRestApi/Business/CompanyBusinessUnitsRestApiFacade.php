@@ -10,6 +10,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @method \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiBusinessFactory getFactory()
+ * @method \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepositoryInterface getRepository()
  */
 class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements CompanyBusinessUnitsRestApiFacadeInterface
 {
@@ -80,5 +81,20 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
     ): RestCompanyBusinessUnitsResponseTransfer
     {
         return $this->getFactory()->createCompanyBusinessUnitWriter()->update($restCompanyBusinessUnitsRequestTransfer);
+    }
+
+    /**
+     * Specification:
+     * - Retrieves company business unit information by external reference.
+     *
+     * @api
+     *
+     * @param string $externalReference
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
+     */
+    public function findByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
+    {
+        return $this->getRepository()->findCompanyBusinessUnitByExternalReference($externalReference);
     }
 }
