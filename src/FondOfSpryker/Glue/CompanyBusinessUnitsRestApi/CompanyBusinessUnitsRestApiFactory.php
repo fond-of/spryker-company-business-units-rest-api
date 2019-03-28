@@ -2,8 +2,12 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi;
 
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapper;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReader;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpander;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpanderInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriter;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriterInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiError;
@@ -48,5 +52,24 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
     public function createRestApiError(): RestApiErrorInterface
     {
         return new RestApiError();
+    }
+
+    /**
+     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpanderInterface
+     */
+    public function createCompanyBusinessUnitsResourceRelationshipExpander(): CompanyBusinessUnitsResourceRelationshipExpanderInterface
+    {
+        return new CompanyBusinessUnitsResourceRelationshipExpander(
+            $this->getResourceBuilder(),
+            $this->createCompanyBusinessUnitsMapper()
+        );
+    }
+
+    /**
+     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface
+     */
+    public function createCompanyBusinessUnitsMapper(): CompanyBusinessUnitsMapperInterface
+    {
+        return new CompanyBusinessUnitsMapper();
     }
 }
