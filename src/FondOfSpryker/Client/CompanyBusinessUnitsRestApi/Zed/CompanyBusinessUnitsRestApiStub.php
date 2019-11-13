@@ -44,8 +44,9 @@ class CompanyBusinessUnitsRestApiStub implements CompanyBusinessUnitsRestApiStub
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function create(RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer): RestCompanyBusinessUnitsResponseTransfer
-    {
+    public function create(
+        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+    ): RestCompanyBusinessUnitsResponseTransfer {
         /** @var \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer */
         $restCompanyBusinessUnitsResponseTransfer = $this->zedRequestClient->call(
             '/company-business-units-rest-api/gateway/create',
@@ -60,9 +61,9 @@ class CompanyBusinessUnitsRestApiStub implements CompanyBusinessUnitsRestApiStub
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function update(RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer
-    {
+    public function update(
+        RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
+    ): RestCompanyBusinessUnitsResponseTransfer {
         /** @var \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer */
         $restCompanyBusinessUnitsResponseTransfer = $this->zedRequestClient->call(
             '/company-business-units-rest-api/gateway/update',

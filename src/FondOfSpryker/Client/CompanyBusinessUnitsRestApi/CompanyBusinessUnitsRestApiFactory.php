@@ -18,6 +18,8 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
     }
 
     /**
+     * @throws
+     *
      * @return \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToZedRequestClientInterface
      */
     protected function getZedRequestClient(): CompanyBusinessUnitsRestApiToZedRequestClientInterface

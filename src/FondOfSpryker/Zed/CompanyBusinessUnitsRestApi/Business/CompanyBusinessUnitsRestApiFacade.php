@@ -77,9 +77,9 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function update(RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer
-    {
+    public function update(
+        RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
+    ): RestCompanyBusinessUnitsResponseTransfer {
         return $this->getFactory()->createCompanyBusinessUnitWriter()->update($restCompanyBusinessUnitsRequestTransfer);
     }
 
