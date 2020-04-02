@@ -40,8 +40,6 @@ class CompanyBusinessUnitsRestApiBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @throws
-     *
      * @return \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Dependency\Plugin\CompanyBusinessUnitMapperPluginInterface[]
      */
     protected function getCompanyBusinessUnitMapperPlugins(): array
@@ -50,8 +48,6 @@ class CompanyBusinessUnitsRestApiBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @throws
-     *
      * @return \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Dependency\Facade\CompanyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterface
      */
     protected function getCompanyBusinessUnitFacade(): CompanyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterface
