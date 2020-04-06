@@ -19,9 +19,9 @@ class CompanyBusinessUnitsResourceRoutePlugin extends AbstractPlugin implements 
      *
      * @return \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface
      */
-    public function configure(ResourceRouteCollectionInterface $resourceRouteCollection
-    ): ResourceRouteCollectionInterface
-    {
+    public function configure(
+        ResourceRouteCollectionInterface $resourceRouteCollection
+    ): ResourceRouteCollectionInterface {
         $resourceRouteCollection
             ->addGet(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_GET, true)
             ->addPatch(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_PATCH, true)

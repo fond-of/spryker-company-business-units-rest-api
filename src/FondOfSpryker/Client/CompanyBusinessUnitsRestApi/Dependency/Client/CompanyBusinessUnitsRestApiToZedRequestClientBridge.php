@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Dependency\Client;
 
+use Spryker\Client\ZedRequest\ZedRequestClientInterface;
 use Spryker\Shared\Kernel\Transfer\TransferInterface;
 
 class CompanyBusinessUnitsRestApiToZedRequestClientBridge implements CompanyBusinessUnitsRestApiToZedRequestClientInterface
@@ -14,7 +15,7 @@ class CompanyBusinessUnitsRestApiToZedRequestClientBridge implements CompanyBusi
     /**
      * @param \Spryker\Client\ZedRequest\ZedRequestClientInterface $zedRequestClient
      */
-    public function __construct($zedRequestClient)
+    public function __construct(ZedRequestClientInterface $zedRequestClient)
     {
         $this->zedRequestClient = $zedRequestClient;
     }

@@ -12,6 +12,7 @@ interface CompanyBusinessUnitReaderInterface
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+    public function findCompanyBusinessUnitByExternalReference(
+        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
     ): RestCompanyBusinessUnitsResponseTransfer;
 }
