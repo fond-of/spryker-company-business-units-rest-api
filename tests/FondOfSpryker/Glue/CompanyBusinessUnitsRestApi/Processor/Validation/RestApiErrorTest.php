@@ -42,7 +42,7 @@ class RestApiErrorTest extends Unit
 
         $this->assertInstanceOf(
             RestResponseInterface::class,
-            $this->restApiError->addExternalReferenceMissingError(
+            $this->restApiError->addUuidMissingError(
                 $this->restResponseInterfaceMock
             )
         );

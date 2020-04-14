@@ -2,10 +2,11 @@
 
 namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business;
 
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -17,33 +18,33 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
     /**
      * @inheritdoc
      *
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $companyBusinessUnitTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
+     *
      * @api
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
+    public function findCompanyBusinessUnitByUuid(
+        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+    ): CompanyBusinessUnitResponseTransfer {
         return $this->getFactory()->createCompanyBusinessUnitReader()
-            ->findCompanyBusinessUnitByExternalReference($restCompanyBusinessUnitsRequestAttributesTransfer);
+            ->findCompanyBusinessUnitByUuid($companyBusinessUnitTransfer);
     }
 
     /**
-     * Specification:
-     * - Creates a company business unit
+     * @inheritdoc
      *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $companyBusinessUnitTransfer
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     *
+     * @api
      */
-    public function create(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        return $this->getFactory()->createCompanyBusinessUnitWriter()->create($restCompanyBusinessUnitsRequestAttributesTransfer);
+    public function findCompanyBusinessUnitCollectionByIdCustomer(
+        CustomerTransfer $customerTransfer
+    ): CompanyBusinessUnitCollectionTransfer {
+        return $this->getFactory()->createCompanyBusinessUnitReader()
+            ->findCompanyBusinessUnitCollectionByIdCustomer($customerTransfer);
     }
 
     /**
@@ -69,22 +70,6 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
 
     /**
      * Specification:
-     * - Updates a company business unit
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
-     */
-    public function update(
-        RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        return $this->getFactory()->createCompanyBusinessUnitWriter()->update($restCompanyBusinessUnitsRequestTransfer);
-    }
-
-    /**
-     * Specification:
      * - Retrieves company business unit information by external reference.
      *
      * @api
@@ -95,6 +80,6 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
      */
     public function findByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
     {
-        return $this->getRepository()->findCompanyBusinessUnitByExternalReference($externalReference);
+        return $this->getRepository()->findCompanyBusinessUnitByUuid($externalReference);
     }
 }

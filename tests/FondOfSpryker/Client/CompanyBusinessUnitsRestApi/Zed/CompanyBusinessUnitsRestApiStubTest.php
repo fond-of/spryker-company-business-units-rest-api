@@ -74,7 +74,7 @@ class CompanyBusinessUnitsRestApiStubTest extends Unit
 
         $this->assertInstanceOf(
             RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitsRestApiStub->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitsRestApiStub->findCompanyBusinessUnitByUuid(
                 $this->restCompanyBusinessUnitsRequestAttributesTransferMock
             )
         );

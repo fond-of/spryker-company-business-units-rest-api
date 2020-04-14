@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence;
 
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
@@ -16,15 +17,15 @@ class CompanyBusinessUnitsRestApiRepository extends AbstractRepository implement
      *
      * @api
      *
-     * @param string $externalReference
+     * @param string $companyBusinessUnitUuid
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
      */
-    public function findCompanyBusinessUnitByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
+    public function findCompanyBusinessUnitByUuid(string $companyBusinessUnitUuid): ?CompanyBusinessUnitTransfer
     {
         $spyCompanyBusinessUnit = $this->getFactory()
             ->getCompanyBusinessUnitPropelQuery()
-            ->filterByExternalReference($externalReference)
+            ->filterByUuid($companyBusinessUnitUuid)
             ->findOne();
 
         if ($spyCompanyBusinessUnit === null) {
@@ -37,5 +38,41 @@ class CompanyBusinessUnitsRestApiRepository extends AbstractRepository implement
         );
 
         return $companyBusinessUnit;
+    }
+
+    /**
+     * Specification:
+     *  - Retrieve company business units by id customer
+     *
+     * @api
+     *
+     * @param string $idCustomer
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
+     */
+    public function findCompanyBusinessUnitCollectionByIdCustomer(string $idCustomer): CompanyBusinessUnitCollectionTransfer
+    {
+        $spyCompanyBusinessUnit = $this->getFactory()
+            ->getCompanyBusinessUnitPropelQuery()
+            ->joinWithCompany()
+                ->useCompanyQuery()
+                ->joinWithCompanyUser()
+                    ->useCompanyUserQuery()
+                    ->filterByIsActive(true)
+                    ->joinWithCustomer()
+                        ->useCustomerQuery()
+                        ->filterByIdCustomer($idCustomer)
+                    ->endUse()
+                ->endUse()
+            ->endUse();
+
+        $spyCompanyBusinessUnitEntityTransfers = $this->buildQueryFromCriteria($spyCompanyBusinessUnit)->find();
+
+        return $this->getFactory()
+            ->createCompanyBusinessUnitMapper()
+            ->mapEntityTransfersToTransfer(
+                $spyCompanyBusinessUnitEntityTransfers,
+                new CompanyBusinessUnitCollectionTransfer()
+            );
     }
 }

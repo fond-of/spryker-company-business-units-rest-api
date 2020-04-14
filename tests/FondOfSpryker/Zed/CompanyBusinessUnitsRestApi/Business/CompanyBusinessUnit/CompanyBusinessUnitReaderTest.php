@@ -80,7 +80,7 @@ class CompanyBusinessUnitReaderTest extends Unit
 
         $this->assertInstanceOf(
             RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
                 $this->restCompanyBusinessUnitsRequestAttributesTransferMock
             )
         );
@@ -101,7 +101,7 @@ class CompanyBusinessUnitReaderTest extends Unit
 
         $this->assertInstanceOf(
             RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
                 $this->restCompanyBusinessUnitsRequestAttributesTransferMock
             )
         );

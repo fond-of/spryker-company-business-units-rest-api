@@ -134,7 +134,7 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
 
         $this->assertInstanceOf(
             RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitsRestApiFacade->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitsRestApiFacade->findCompanyBusinessUnitByUuid(
                 $this->restCompanyBusinessUnitsRequestAttributesTransferMock
             )
         );

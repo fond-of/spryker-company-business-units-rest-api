@@ -2,14 +2,11 @@
 
 namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit;
 
-use FondOfSpryker\Shared\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepositoryInterface;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsErrorTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
-use Symfony\Component\HttpFoundation\Response;
+use Generated\Shared\Transfer\CustomerTransfer;
 
 class CompanyBusinessUnitReader implements CompanyBusinessUnitReaderInterface
 {
@@ -27,63 +24,45 @@ class CompanyBusinessUnitReader implements CompanyBusinessUnitReaderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        $companyBusinessUnitTransfer = $this->companyBusinessUnitsRestApiRepository->findCompanyBusinessUnitByExternalReference(
-            $restCompanyBusinessUnitsRequestAttributesTransfer->getExternalReference()
+    public function findCompanyBusinessUnitCollectionByIdCustomer(
+        CustomerTransfer $customerTransfer
+    ): CompanyBusinessUnitCollectionTransfer {
+        $customerTransfer->requireIdCustomer();
+
+        $companyBusinessUnitCollectionTransfer = $this->companyBusinessUnitsRestApiRepository->findCompanyBusinessUnitCollectionByIdCustomer(
+            $customerTransfer->getIdCustomer()
         );
 
-        if ($companyBusinessUnitTransfer !== null) {
-            return $this->createCompanyBusinessUnitResponseTransfer($companyBusinessUnitTransfer);
-        }
-
-        return $this->createCompanyBusinessUnitFailedToLoadErrorResponseTransfer();
+        return $companyBusinessUnitCollectionTransfer;
     }
 
     /**
      * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
-    protected function createCompanyBusinessUnitResponseTransfer(
+    public function findCompanyBusinessUnitByUuid(
         CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        $restCompanyBusinessUnitsResponseAttributesTransfer = new RestCompanyBusinessUnitsResponseAttributesTransfer();
+    ): CompanyBusinessUnitResponseTransfer {
+        $companyBusinessUnitTransfer->requireUuid();
 
-        $restCompanyBusinessUnitsResponseAttributesTransfer->fromArray(
-            $companyBusinessUnitTransfer->toArray(),
-            true
+        $companyBusinessUnitTransfer = $this->companyBusinessUnitsRestApiRepository->findCompanyBusinessUnitByUuid(
+            $companyBusinessUnitTransfer->getUuid()
         );
 
-        $restCompanyBusinessUnitsResponseTransfer = new RestCompanyBusinessUnitsResponseTransfer();
+        $companyBusinessUnitResponseTransfer = new CompanyBusinessUnitResponseTransfer();
 
-        $restCompanyBusinessUnitsResponseTransfer->setIsSuccess(true)
-            ->setRestCompanyBusinessUnitsResponseAttributes($restCompanyBusinessUnitsResponseAttributesTransfer);
+        if ($companyBusinessUnitTransfer === null) {
+            return $companyBusinessUnitResponseTransfer
+                ->setIsSuccessful(false);
+        }
 
-        return $restCompanyBusinessUnitsResponseTransfer;
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
-     */
-    protected function createCompanyBusinessUnitFailedToLoadErrorResponseTransfer(): RestCompanyBusinessUnitsResponseTransfer
-    {
-        $restCompanyBusinessUnitsErrorTransfer = new RestCompanyBusinessUnitsErrorTransfer();
-
-        $restCompanyBusinessUnitsErrorTransfer->setStatus(Response::HTTP_NOT_FOUND)
-            ->setCode(CompanyBusinessUnitsRestApiConfig::RESPONSE_CODE_COMPANY_BUSINESS_UNIT_NOT_FOUND)
-            ->setDetail(CompanyBusinessUnitsRestApiConfig::RESPONSE_DETAILS_COMPANY_BUSINESS_UNIT_NOT_FOUND);
-
-        $restCompanyBusinessUnitsResponseTransfer = new RestCompanyBusinessUnitsResponseTransfer();
-
-        $restCompanyBusinessUnitsResponseTransfer->setIsSuccess(false)
-            ->addError($restCompanyBusinessUnitsErrorTransfer);
-
-        return $restCompanyBusinessUnitsResponseTransfer;
+        return $companyBusinessUnitResponseTransfer
+            ->setIsSuccessful(true)
+            ->setCompanyBusinessUnitTransfer($companyBusinessUnitTransfer);
     }
 }

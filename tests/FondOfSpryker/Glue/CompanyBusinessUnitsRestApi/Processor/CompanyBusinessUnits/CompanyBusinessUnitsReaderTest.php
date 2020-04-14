@@ -206,7 +206,7 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->assertInstanceOf(
             RestResponseInterface::class,
-            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
         );
@@ -231,7 +231,7 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->assertInstanceOf(
             RestResponseInterface::class,
-            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
         );
@@ -280,7 +280,7 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->assertInstanceOf(
             RestResponseInterface::class,
-            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByExternalReference(
+            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
         );

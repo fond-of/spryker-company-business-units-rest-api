@@ -3,9 +3,10 @@
 namespace FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Zed;
 
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToZedRequestClientInterface;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 
 class CompanyBusinessUnitsRestApiStub implements CompanyBusinessUnitsRestApiStubInterface
 {
@@ -23,53 +24,36 @@ class CompanyBusinessUnitsRestApiStub implements CompanyBusinessUnitsRestApiStub
     }
 
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        /** @var \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer */
-        $restCompanyBusinessUnitsResponseTransfer = $this->zedRequestClient->call(
-            '/company-business-units-rest-api/gateway/find-company-business-unit-by-external-reference',
-            $restCompanyBusinessUnitsRequestAttributesTransfer
+    public function findCompanyBusinessUnitByUuid(
+        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+    ): CompanyBusinessUnitResponseTransfer {
+        /** @var \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer $companyBusinessUnitTransfer */
+        $companyBusinessUnitTransfer = $this->zedRequestClient->call(
+            '/company-business-units-rest-api/gateway/find-company-business-unit-by-uuid',
+            $companyBusinessUnitTransfer
         );
 
-        return $restCompanyBusinessUnitsResponseTransfer;
+        return $companyBusinessUnitTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
-    public function create(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        /** @var \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer */
-        $restCompanyBusinessUnitsResponseTransfer = $this->zedRequestClient->call(
-            '/company-business-units-rest-api/gateway/create',
-            $restCompanyBusinessUnitsRequestAttributesTransfer
+    public function findCompanyBusinessUnitCollectionByIdCustomer(
+        CustomerTransfer $customerTransfer
+    ): CompanyBusinessUnitCollectionTransfer {
+        /** @var \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer */
+        $companyBusinessUnitCollectionTransfer = $this->zedRequestClient->call(
+            '/company-business-units-rest-api/gateway/find-company-business-unit-collection-by-id-customer',
+            $customerTransfer
         );
 
-        return $restCompanyBusinessUnitsResponseTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
-     */
-    public function update(
-        RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        /** @var \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer */
-        $restCompanyBusinessUnitsResponseTransfer = $this->zedRequestClient->call(
-            '/company-business-units-rest-api/gateway/update',
-            $restCompanyBusinessUnitsRequestTransfer
-        );
-
-        return $restCompanyBusinessUnitsResponseTransfer;
+        return $companyBusinessUnitCollectionTransfer;
     }
 }
