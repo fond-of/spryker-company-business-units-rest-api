@@ -4,6 +4,7 @@ namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Communication\Plugin\Com
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiFacade;
+use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiFacadeInterface;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 
@@ -34,8 +35,6 @@ class CompanyBusinessUnitMapperPluginTest extends Unit
      */
     protected function _before(): void
     {
-        parent::_before();
-
         $this->companyBusinessUnitsRestApiFacadeMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiFacade::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -48,8 +47,30 @@ class CompanyBusinessUnitMapperPluginTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyBusinessUnitMapperPlugin = new CompanyBusinessUnitMapperPlugin();
-        $this->companyBusinessUnitMapperPlugin->setFacade($this->companyBusinessUnitsRestApiFacadeMock);
+        $this->companyBusinessUnitMapperPlugin = new class (
+            $this->companyBusinessUnitsRestApiFacadeMock
+        ) extends CompanyBusinessUnitMapperPlugin {
+            /**
+             * @var \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiFacadeInterface
+             */
+            protected $companyBusinessUnitsRestApiFacade;
+
+            /**
+             * @param \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiFacadeInterface $companyBusinessUnitsRestApiFacade
+             */
+            public function __construct(CompanyBusinessUnitsRestApiFacadeInterface $companyBusinessUnitsRestApiFacade)
+            {
+                $this->companyBusinessUnitsRestApiFacade = $companyBusinessUnitsRestApiFacade;
+            }
+
+            /**
+             * @return \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiFacadeInterface
+             */
+            public function getFacade(): CompanyBusinessUnitsRestApiFacadeInterface
+            {
+                return $this->companyBusinessUnitsRestApiFacade;
+            }
+        };
     }
 
     /**
