@@ -21,7 +21,7 @@ interface CompanyBusinessUnitsRestApiFacadeInterface
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(
+    public function findByExternalReference(
         RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
     ): RestCompanyBusinessUnitsResponseTransfer;
 

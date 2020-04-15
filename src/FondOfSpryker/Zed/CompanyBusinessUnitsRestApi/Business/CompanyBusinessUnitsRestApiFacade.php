@@ -25,7 +25,7 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
      *
      * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReference(
+    public function findByExternalReference(
         RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
     ): RestCompanyBusinessUnitsResponseTransfer {
         return $this->getFactory()->createCompanyBusinessUnitReader()
