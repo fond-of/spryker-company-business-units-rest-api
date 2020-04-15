@@ -9,6 +9,18 @@ interface CompanyBusinessUnitsRestApiRepositoryInterface
 {
     /**
      * Specification:
+     *  - Retrieve a company business unit by CompanyBusinessUnitTransfer::externalReference in the transfer
+     *
+     * @api
+     *
+     * @param string $externalReference
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
+     */
+    public function findCompanyBusinessUnitByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer;
+
+    /**
+     * Specification:
      * - Retrieve a company business unit by uuid
      *
      * @api

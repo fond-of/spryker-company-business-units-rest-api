@@ -17,6 +17,35 @@ class CompanyBusinessUnitsRestApiRepository extends AbstractRepository implement
      *
      * @api
      *
+     * @param string $externalReference
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
+     */
+    public function findCompanyBusinessUnitByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
+    {
+        $spyCompanyBusinessUnit = $this->getFactory()
+            ->getCompanyBusinessUnitPropelQuery()
+            ->filterByExternalReference($externalReference)
+            ->findOne();
+
+        if ($spyCompanyBusinessUnit === null) {
+            return null;
+        }
+
+        $companyBusinessUnit = (new CompanyBusinessUnitTransfer())->fromArray(
+            $spyCompanyBusinessUnit->toArray(),
+            true
+        );
+
+        return $companyBusinessUnit;
+    }
+
+    /**
+     * Specification:
+     *  - Retrieve a company business unit by CompanyBusinessUnitTransfer::externalReference in the transfer
+     *
+     * @api
+     *
      * @param string $companyBusinessUnitUuid
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
