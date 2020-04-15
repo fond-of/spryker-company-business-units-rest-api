@@ -2,12 +2,16 @@
 
 namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits;
 
+use ArrayObject;
 use Codeception\Test\Unit;
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsErrorTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
+use Generated\Shared\Transfer\RestUserTransfer;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
@@ -56,9 +60,9 @@ class CompanyBusinessUnitsReaderTest extends Unit
     protected $id;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
-    protected $restCompanyBusinessUnitsResponseTransferMock;
+    protected $companyBusinessUnitResponseTransferMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseAttributesTransfer
@@ -96,12 +100,45 @@ class CompanyBusinessUnitsReaderTest extends Unit
     protected $errorStatus;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface
+     */
+    protected $companyBusinessUnitsMapperInterfaceMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestUserTransfer
+     */
+    protected $restUserTransferMock;
+
+    /**
+     * @var int
+     */
+    protected $surrogateIdentifier;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
+     */
+    protected $companyBusinessUnitCollectionTransferMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitTransfer
+     */
+    protected $companyBusinessUnitTransferMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\CompanyBusinessUnitTransfer[]
+     */
+    protected $companyBusinessUnits;
+
+    /**
+     * @var string
+     */
+    protected $uuid;
+
+    /**
      * @return void
      */
     protected function _before(): void
     {
-        parent::_before();
-
         $this->restResourceBuilderInterfaceMock = $this->getMockBuilder(RestResourceBuilderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -128,7 +165,7 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->id = 1;
 
-        $this->restCompanyBusinessUnitsResponseTransferMock = $this->getMockBuilder(RestCompanyBusinessUnitsResponseTransfer::class)
+        $this->companyBusinessUnitResponseTransferMock = $this->getMockBuilder(CompanyBusinessUnitResponseTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -137,10 +174,6 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->getMock();
 
         $this->externalReference = 'external-reference';
-
-        $this->restCompanyBusinessUnitsErrorTransferMock = $this->getMockBuilder(RestCompanyBusinessUnitsErrorTransfer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $this->restCompanyBusinessUnitsErrorTransferMocks = [
             $this->restCompanyBusinessUnitsErrorTransferMock,
@@ -152,9 +185,34 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->errorDetail = 'detail';
 
+        $this->companyBusinessUnitsMapperInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsMapperInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->restUserTransferMock = $this->getMockBuilder(RestUserTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->surrogateIdentifier = 1;
+
+        $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyBusinessUnitTransferMock = $this->getMockBuilder(CompanyBusinessUnitTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyBusinessUnits = new ArrayObject([
+            $this->companyBusinessUnitTransferMock,
+        ]);
+
+        $this->uuid = 'uuid';
+
         $this->companyBusinessUnitsReader = new CompanyBusinessUnitsReader(
             $this->restResourceBuilderInterfaceMock,
             $this->companyBusinessUnitsRestApiClientInterfaceMock,
+            $this->companyBusinessUnitsMapperInterfaceMock,
             $this->restApiErrorInterfaceMock
         );
     }
@@ -162,7 +220,62 @@ class CompanyBusinessUnitsReaderTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReference(): void
+    public function testFindCompanyBusinessUnitCollectionByIdCustomer(): void
+    {
+        $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
+            ->method('createRestResponse')
+            ->willReturn($this->restResponseInterfaceMock);
+
+        $this->restRequestInterfaceMock->expects($this->atLeastOnce())
+            ->method('getRestUser')
+            ->willReturn($this->restUserTransferMock);
+
+        $this->restUserTransferMock->expects($this->atLeastOnce())
+            ->method('getSurrogateIdentifier')
+            ->willReturn($this->surrogateIdentifier);
+
+        $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitCollectionByIdCustomer')
+            ->willReturn($this->companyBusinessUnitCollectionTransferMock);
+
+        $this->companyBusinessUnitCollectionTransferMock->expects($this->atLeastOnce())
+            ->method('getCompanyBusinessUnits')
+            ->willReturn($this->companyBusinessUnits);
+
+        $this->companyBusinessUnitsMapperInterfaceMock->expects($this->atLeastOnce())
+            ->method('mapCompanyBusinessUnitTransferToRestCompanyBusinessUnitsResponseAttributesTransfer')
+            ->with($this->companyBusinessUnitTransferMock)
+            ->willReturn($this->restCompanyBusinessUnitsResponseAttributesTransferMock);
+
+        $this->restCompanyBusinessUnitsResponseAttributesTransferMock->expects($this->atLeastOnce())
+            ->method('getUuid')
+            ->willReturn($this->uuid);
+
+        $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
+            ->method('createRestResource')
+            ->with(
+                CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS,
+                $this->uuid,
+                $this->restCompanyBusinessUnitsResponseAttributesTransferMock
+            )->willReturn($this->restResourceInterfaceMock);
+
+        $this->restResponseInterfaceMock->expects($this->atLeastOnce())
+            ->method('addResource')
+            ->with($this->restResourceInterfaceMock)
+            ->willReturnSelf();
+
+        $this->assertInstanceOf(
+            RestResponseInterface::class,
+            $this->companyBusinessUnitsReader->findCompanyBusinessUnitCollectionByIdCustomer(
+                $this->restRequestInterfaceMock
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindCompanyBusinessUnitByUuid(): void
     {
         $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
             ->method('createRestResponse')
@@ -174,35 +287,61 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->restResourceInterfaceMock->expects($this->atLeastOnce())
             ->method('getId')
-            ->willReturn($this->id);
+            ->willReturn($this->uuid);
 
         $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->willReturn($this->restCompanyBusinessUnitsResponseTransferMock);
+            ->method('findCompanyBusinessUnitByUuid')
+            ->willReturn($this->companyBusinessUnitResponseTransferMock);
 
-        $this->restCompanyBusinessUnitsResponseTransferMock->expects($this->atLeastOnce())
-            ->method('getIsSuccess')
+        $this->companyBusinessUnitResponseTransferMock->expects($this->atLeastOnce())
+            ->method('getIsSuccessful')
             ->willReturn(true);
 
-        $this->restCompanyBusinessUnitsResponseTransferMock->expects($this->atLeastOnce())
-            ->method('getRestCompanyBusinessUnitsResponseAttributes')
+        $this->restRequestInterfaceMock->expects($this->atLeastOnce())
+            ->method('getRestUser')
+            ->willReturn($this->restUserTransferMock);
+
+        $this->restUserTransferMock->expects($this->atLeastOnce())
+            ->method('getSurrogateIdentifier')
+            ->willReturn($this->surrogateIdentifier);
+
+        $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitCollectionByIdCustomer')
+            ->willReturn($this->companyBusinessUnitCollectionTransferMock);
+
+        $this->companyBusinessUnitCollectionTransferMock->expects($this->atLeastOnce())
+            ->method('getCompanyBusinessUnits')
+            ->willReturn($this->companyBusinessUnits);
+
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('getUuid')
+            ->willReturn($this->uuid);
+
+        $this->companyBusinessUnitResponseTransferMock->expects($this->atLeastOnce())
+            ->method('getCompanyBusinessUnitTransfer')
+            ->willReturn($this->companyBusinessUnitTransferMock);
+
+        $this->companyBusinessUnitsMapperInterfaceMock->expects($this->atLeastOnce())
+            ->method('mapCompanyBusinessUnitTransferToRestCompanyBusinessUnitsResponseAttributesTransfer')
+            ->with($this->companyBusinessUnitTransferMock)
             ->willReturn($this->restCompanyBusinessUnitsResponseAttributesTransferMock);
 
         $this->restCompanyBusinessUnitsResponseAttributesTransferMock->expects($this->atLeastOnce())
-            ->method('getExternalReference')
-            ->willReturn($this->externalReference);
+            ->method('getUuid')
+            ->willReturn($this->uuid);
 
         $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
             ->method('createRestResource')
-            ->willReturn($this->restResourceInterfaceMock);
-
-        $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
-            ->method('createRestResponse')
-            ->willReturn($this->restResponseInterfaceMock);
+            ->with(
+                CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS,
+                $this->uuid,
+                $this->restCompanyBusinessUnitsResponseAttributesTransferMock
+            )->willReturn($this->restResourceInterfaceMock);
 
         $this->restResponseInterfaceMock->expects($this->atLeastOnce())
             ->method('addResource')
-            ->willReturn($this->restResponseInterfaceMock);
+            ->with($this->restResourceInterfaceMock)
+            ->willReturnSelf();
 
         $this->assertInstanceOf(
             RestResponseInterface::class,
@@ -215,7 +354,7 @@ class CompanyBusinessUnitsReaderTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReferenceExternalReferenceMissing(): void
+    public function testFindCompanyBusinessUnitByUuidUuidMissing(): void
     {
         $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
             ->method('createRestResponse')
@@ -229,6 +368,11 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->method('getId')
             ->willReturn(null);
 
+        $this->restApiErrorInterfaceMock->expects($this->atLeastOnce())
+            ->method('addUuidMissingError')
+            ->with($this->restResponseInterfaceMock)
+            ->willReturn($this->restResponseInterfaceMock);
+
         $this->assertInstanceOf(
             RestResponseInterface::class,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
@@ -240,7 +384,45 @@ class CompanyBusinessUnitsReaderTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReferenceLoadCompanyBusinessUnitFailed(): void
+    public function testFindCompanyBusinessUnitByUuidCompanyBusinessUnitNotFound(): void
+    {
+        $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
+            ->method('createRestResponse')
+            ->willReturn($this->restResponseInterfaceMock);
+
+        $this->restRequestInterfaceMock->expects($this->atLeastOnce())
+            ->method('getResource')
+            ->willReturn($this->restResourceInterfaceMock);
+
+        $this->restResourceInterfaceMock->expects($this->atLeastOnce())
+            ->method('getId')
+            ->willReturn($this->uuid);
+
+        $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitByUuid')
+            ->willReturn($this->companyBusinessUnitResponseTransferMock);
+
+        $this->companyBusinessUnitResponseTransferMock->expects($this->atLeastOnce())
+            ->method('getIsSuccessful')
+            ->willReturn(false);
+
+        $this->restApiErrorInterfaceMock->expects($this->atLeastOnce())
+            ->method('addCompanyBusinessUnitNotFoundError')
+            ->with($this->restResponseInterfaceMock)
+            ->willReturn($this->restResponseInterfaceMock);
+
+        $this->assertInstanceOf(
+            RestResponseInterface::class,
+            $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
+                $this->restRequestInterfaceMock
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindCompanyBusinessUnitByUuidCompanyBusinessUnitNoPermission(): void
     {
         $this->restResourceBuilderInterfaceMock->expects($this->atLeastOnce())
             ->method('createRestResponse')
@@ -255,28 +437,37 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->willReturn($this->id);
 
         $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->willReturn($this->restCompanyBusinessUnitsResponseTransferMock);
+            ->method('findCompanyBusinessUnitByUuid')
+            ->willReturn($this->companyBusinessUnitResponseTransferMock);
 
-        $this->restCompanyBusinessUnitsResponseTransferMock->expects($this->atLeastOnce())
-            ->method('getIsSuccess')
-            ->willReturn(false);
+        $this->companyBusinessUnitResponseTransferMock->expects($this->atLeastOnce())
+            ->method('getIsSuccessful')
+            ->willReturn(true);
 
-        $this->restCompanyBusinessUnitsResponseTransferMock->expects($this->atLeastOnce())
-            ->method('getErrors')
-            ->willReturn($this->restCompanyBusinessUnitsErrorTransferMocks);
+        $this->restRequestInterfaceMock->expects($this->atLeastOnce())
+            ->method('getRestUser')
+            ->willReturn($this->restUserTransferMock);
 
-        $this->restCompanyBusinessUnitsErrorTransferMock->expects($this->atLeastOnce())
-            ->method('getCode')
-            ->willReturn($this->errorCode);
+        $this->restUserTransferMock->expects($this->atLeastOnce())
+            ->method('getSurrogateIdentifier')
+            ->willReturn($this->surrogateIdentifier);
 
-        $this->restCompanyBusinessUnitsErrorTransferMock->expects($this->atLeastOnce())
-            ->method('getStatus')
-            ->willReturn($this->errorStatus);
+        $this->companyBusinessUnitsRestApiClientInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitCollectionByIdCustomer')
+            ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
-        $this->restCompanyBusinessUnitsErrorTransferMock->expects($this->atLeastOnce())
-            ->method('getDetail')
-            ->willReturn($this->errorDetail);
+        $this->companyBusinessUnitCollectionTransferMock->expects($this->atLeastOnce())
+            ->method('getCompanyBusinessUnits')
+            ->willReturn($this->companyBusinessUnits);
+
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('getUuid')
+            ->willReturn($this->uuid);
+
+        $this->restApiErrorInterfaceMock->expects($this->atLeastOnce())
+            ->method('addCompanyBusinessUnitNoPermissionError')
+            ->with($this->restResponseInterfaceMock)
+            ->willReturn($this->restResponseInterfaceMock);
 
         $this->assertInstanceOf(
             RestResponseInterface::class,

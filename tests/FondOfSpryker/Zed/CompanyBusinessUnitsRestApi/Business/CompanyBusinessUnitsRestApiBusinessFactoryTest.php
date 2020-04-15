@@ -5,9 +5,6 @@ namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitMapperInterface;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitReaderInterface;
-use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitWriterInterface;
-use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiDependencyProvider;
-use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Dependency\Facade\CompanyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterface;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepository;
 use Spryker\Zed\Kernel\Container;
 
@@ -29,11 +26,6 @@ class CompanyBusinessUnitsRestApiBusinessFactoryTest extends Unit
     protected $containerMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Dependency\Facade\CompanyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterface
-     */
-    protected $companyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterfaceMock;
-
-    /**
      * @var array
      */
     protected $companyBusinessUnitMapperPlugins;
@@ -53,10 +45,6 @@ class CompanyBusinessUnitsRestApiBusinessFactoryTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->companyBusinessUnitMapperPlugins = [];
 
         $this->companyBusinessUnitsRestApiBusinessFactory = new CompanyBusinessUnitsRestApiBusinessFactory();
@@ -72,32 +60,6 @@ class CompanyBusinessUnitsRestApiBusinessFactoryTest extends Unit
         $this->assertInstanceOf(
             CompanyBusinessUnitReaderInterface::class,
             $this->companyBusinessUnitsRestApiBusinessFactory->createCompanyBusinessUnitReader()
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateCompanyBusinessUnitWriter(): void
-    {
-        $this->containerMock->expects($this->atLeastOnce())
-            ->method('has')
-            ->willReturn(true);
-
-        $this->containerMock->expects($this->atLeastOnce())
-            ->method('get')
-            ->withConsecutive(
-                [CompanyBusinessUnitsRestApiDependencyProvider::FACADE_COMPANY_BUSINESS_UNIT],
-                [CompanyBusinessUnitsRestApiDependencyProvider::PLUGINS_COMPANY_BUSINESS_UNIT_MAPPER]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $this->companyBusinessUnitsRestApiToCompanyBusinessUnitFacadeInterfaceMock,
-                $this->companyBusinessUnitMapperPlugins
-            );
-
-        $this->assertInstanceOf(
-            CompanyBusinessUnitWriterInterface::class,
-            $this->companyBusinessUnitsRestApiBusinessFactory->createCompanyBusinessUnitWriter()
         );
     }
 

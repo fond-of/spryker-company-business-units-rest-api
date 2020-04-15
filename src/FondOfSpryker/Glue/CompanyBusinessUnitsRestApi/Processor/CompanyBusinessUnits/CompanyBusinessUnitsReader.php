@@ -105,7 +105,8 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
             return $this->restApiError->addUuidMissingError($restResponse);
         }
 
-        $companyBusinessUnitTransfer = (new CompanyBusinessUnitTransfer())->setUuid($restRequest->getResource()->getId());
+        $companyBusinessUnitTransfer = (new CompanyBusinessUnitTransfer())
+            ->setUuid($restRequest->getResource()->getId());
 
         $restCompanyBusinessUnitResponseTransfer = $this->companyBusinessUnitsRestApiClient
             ->findCompanyBusinessUnitByUuid($companyBusinessUnitTransfer);

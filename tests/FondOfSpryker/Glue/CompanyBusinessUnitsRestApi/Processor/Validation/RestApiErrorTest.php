@@ -22,8 +22,6 @@ class RestApiErrorTest extends Unit
      */
     protected function _before(): void
     {
-        parent::_before();
-
         $this->restResponseInterfaceMock = $this->getMockBuilder(RestResponseInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -34,7 +32,7 @@ class RestApiErrorTest extends Unit
     /**
      * @return void
      */
-    public function testAddExternalReferenceMissingError(): void
+    public function testAddUuidMissingError(): void
     {
         $this->restResponseInterfaceMock->expects($this->atLeastOnce())
             ->method('addError')
@@ -43,6 +41,40 @@ class RestApiErrorTest extends Unit
         $this->assertInstanceOf(
             RestResponseInterface::class,
             $this->restApiError->addUuidMissingError(
+                $this->restResponseInterfaceMock
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testAddCompanyBusinessUnitNotFoundError(): void
+    {
+        $this->restResponseInterfaceMock->expects($this->atLeastOnce())
+            ->method('addError')
+            ->willReturn($this->restResponseInterfaceMock);
+
+        $this->assertInstanceOf(
+            RestResponseInterface::class,
+            $this->restApiError->addCompanyBusinessUnitNotFoundError(
+                $this->restResponseInterfaceMock
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testAddCompanyBusinessUnitNoPermissionError(): void
+    {
+        $this->restResponseInterfaceMock->expects($this->atLeastOnce())
+            ->method('addError')
+            ->willReturn($this->restResponseInterfaceMock);
+
+        $this->assertInstanceOf(
+            RestResponseInterface::class,
+            $this->restApiError->addCompanyBusinessUnitNoPermissionError(
                 $this->restResponseInterfaceMock
             )
         );

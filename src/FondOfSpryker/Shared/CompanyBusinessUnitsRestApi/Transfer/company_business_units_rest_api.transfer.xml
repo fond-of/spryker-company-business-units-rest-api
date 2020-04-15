@@ -13,6 +13,15 @@
         <property name="bic" type="string" />
     </transfer>
 
+    <transfer name="RestCompanyBusinessUnitsRequestAttributes">
+        <property name="name" type="string" />
+        <property name="externalReference" type="string" />
+        <property name="email" type="string" />
+        <property name="phone" type="string" />
+        <property name="iban" type="string" />
+        <property name="bic" type="string" />
+    </transfer>
+
     <transfer name="RestCompanyBusinessUnitsError">
         <property name="status" type="int"/>
         <property name="code" type="string"/>
@@ -24,5 +33,11 @@
         <property name="isSuccess" type="bool" />
         <property name="errors" type="RestCompanyBusinessUnitsError[]" singular="error" />
         <property name="restCompanyBusinessUnitsResponseAttributes" type="RestCompanyBusinessUnitsResponseAttributes" />
+    </transfer>
+
+    <transfer name="CompanyBusinessUnitResponse">
+        <property name="companyBusinessUnitTransfer" type="CompanyBusinessUnit"/>
+        <property name="isSuccessful" type="bool"/>
+        <property name="messages" type="ResponseMessage[]" singular="message"/>
     </transfer>
 </transfers>

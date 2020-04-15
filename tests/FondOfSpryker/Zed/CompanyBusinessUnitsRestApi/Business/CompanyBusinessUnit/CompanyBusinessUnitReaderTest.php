@@ -4,9 +4,11 @@ namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusiness
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepositoryInterface;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
 
 class CompanyBusinessUnitReaderTest extends Unit
 {
@@ -36,12 +38,30 @@ class CompanyBusinessUnitReaderTest extends Unit
     protected $companyBusinessUnitTransferMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CustomerTransfer
+     */
+    protected $customerTransferMock;
+
+    /**
+     * @var int
+     */
+    protected $idCustomer;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
+     */
+    protected $companyBusinessUnitCollectionTransferMock;
+
+    /**
+     * @var string
+     */
+    protected $uuid;
+
+    /**
      * @return void
      */
     protected function _before(): void
     {
-        parent::_before();
-
         $this->companyBusinessUnitsRestApiRepositoryInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -56,6 +76,18 @@ class CompanyBusinessUnitReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->customerTransferMock = $this->getMockBuilder(CustomerTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->idCustomer = 1;
+
+        $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->uuid = 'uuid';
+
         $this->companyBusinessUnitReader = new CompanyBusinessUnitReader(
             $this->companyBusinessUnitsRestApiRepositoryInterfaceMock
         );
@@ -64,24 +96,25 @@ class CompanyBusinessUnitReaderTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReference(): void
+    public function testFindCompanyBusinessUnitCollectionByIdCustomer(): void
     {
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock->expects($this->atLeastOnce())
-            ->method('getExternalReference')
-            ->willReturn($this->externalReference);
+        $this->customerTransferMock->expects($this->atLeastOnce())
+            ->method('requireIdCustomer')
+            ->willReturnSelf();
+
+        $this->customerTransferMock->expects($this->atLeastOnce())
+            ->method('getIdCustomer')
+            ->willReturn($this->idCustomer);
 
         $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->willReturn($this->companyBusinessUnitTransferMock);
-
-        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
-            ->method('toArray')
-            ->willReturn([]);
+            ->method('findCompanyBusinessUnitCollectionByIdCustomer')
+            ->with($this->idCustomer)
+            ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
         $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock
+            CompanyBusinessUnitCollectionTransfer::class,
+            $this->companyBusinessUnitReader->findCompanyBusinessUnitCollectionByIdCustomer(
+                $this->customerTransferMock
             )
         );
     }
@@ -89,20 +122,49 @@ class CompanyBusinessUnitReaderTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReferenceFail(): void
+    public function testFindCompanyBusinessUnitByUuid(): void
     {
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock->expects($this->atLeastOnce())
-            ->method('getExternalReference')
-            ->willReturn($this->externalReference);
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('requireUuid')
+            ->willReturnSelf();
+
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('getUuid')
+            ->willReturn($this->uuid);
 
         $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
+            ->method('findCompanyBusinessUnitByUuid')
+            ->willReturn($this->companyBusinessUnitTransferMock);
+
+        $this->assertInstanceOf(
+            CompanyBusinessUnitResponseTransfer::class,
+            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
+                $this->companyBusinessUnitTransferMock
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindCompanyBusinessUnitByUuidFail(): void
+    {
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('requireUuid')
+            ->willReturnSelf();
+
+        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
+            ->method('getUuid')
+            ->willReturn($this->uuid);
+
+        $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitByUuid')
             ->willReturn(null);
 
         $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseTransfer::class,
+            CompanyBusinessUnitResponseTransfer::class,
             $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock
+                $this->companyBusinessUnitTransferMock
             )
         );
     }

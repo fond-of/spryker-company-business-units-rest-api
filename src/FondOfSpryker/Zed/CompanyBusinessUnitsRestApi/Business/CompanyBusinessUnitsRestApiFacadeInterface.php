@@ -40,20 +40,6 @@ interface CompanyBusinessUnitsRestApiFacadeInterface
 
     /**
      * Specification:
-     * - Retrieves company business unit information by external reference.
-     *
-     * @api
-     *
-     * @param string $externalReference
-     *
-     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
-     */
-    public function findByExternalReference(
-        string $externalReference
-    ): ?CompanyBusinessUnitTransfer;
-
-    /**
-     * Specification:
      * - Map to company business unit transfer
      *
      * @api

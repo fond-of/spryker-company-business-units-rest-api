@@ -67,19 +67,4 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
             $companyBusinessUnitTransfer
         );
     }
-
-    /**
-     * Specification:
-     * - Retrieves company business unit information by external reference.
-     *
-     * @api
-     *
-     * @param string $externalReference
-     *
-     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
-     */
-    public function findByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
-    {
-        return $this->getRepository()->findCompanyBusinessUnitByUuid($externalReference);
-    }
 }
