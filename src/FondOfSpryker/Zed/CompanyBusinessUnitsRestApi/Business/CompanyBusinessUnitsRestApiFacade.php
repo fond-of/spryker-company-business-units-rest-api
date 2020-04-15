@@ -7,7 +7,6 @@ use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -16,22 +15,6 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
  */
 class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements CompanyBusinessUnitsRestApiFacadeInterface
 {
-    /**
-     * @inheritdoc
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
-     */
-    public function findByExternalReference(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-    ): RestCompanyBusinessUnitsResponseTransfer {
-        return $this->getFactory()->createCompanyBusinessUnitReader()
-            ->findCompanyBusinessUnitByExternalReference($restCompanyBusinessUnitsRequestAttributesTransfer);
-    }
-
     /**
      * @inheritdoc
      *
@@ -83,5 +66,20 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
             $restCompanyBusinessUnitsRequestAttributesTransfer,
             $companyBusinessUnitTransfer
         );
+    }
+
+    /**
+     * Specification:
+     * - Retrieves company business unit information by external reference.
+     *
+     * @api
+     *
+     * @param string $externalReference
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
+     */
+    public function findByExternalReference(string $externalReference): ?CompanyBusinessUnitTransfer
+    {
+        return $this->getRepository()->findCompanyBusinessUnitByExternalReference($externalReference);
     }
 }

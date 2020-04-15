@@ -180,19 +180,15 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
      */
     public function testFindByExternalReference(): void
     {
-        $this->companyBusinessUnitsRestApiBusinessFactoryMock->expects($this->atLeastOnce())
-            ->method('createCompanyBusinessUnitReader')
-            ->willReturn($this->companyBusinessUnitReaderInterfaceMock);
-
-        $this->companyBusinessUnitReaderInterfaceMock->expects($this->atLeastOnce())
+        $this->companyBusinessUnitsRestApiRepositoryMock->expects($this->atLeastOnce())
             ->method('findCompanyBusinessUnitByExternalReference')
-            ->with($this->restCompanyBusinessUnitsRequestAttributesTransferMock)
-            ->willReturn($this->restCompanyBusinessUnitsResponseTransferMock);
+            ->with($this->externalReference)
+            ->willReturn($this->companyBusinessUnitTransferMock);
 
         $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseTransfer::class,
+            CompanyBusinessUnitTransfer::class,
             $this->companyBusinessUnitsRestApiFacade->findByExternalReference(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock
+                $this->externalReference
             )
         );
     }

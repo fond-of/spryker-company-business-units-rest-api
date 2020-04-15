@@ -9,7 +9,6 @@ use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
 
 class CompanyBusinessUnitReaderTest extends Unit
 {
@@ -166,54 +165,6 @@ class CompanyBusinessUnitReaderTest extends Unit
             CompanyBusinessUnitResponseTransfer::class,
             $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
                 $this->companyBusinessUnitTransferMock
-            )
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testFindCompanyBusinessUnitByExternalReference(): void
-    {
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock->expects($this->atLeastOnce())
-            ->method('getExternalReference')
-            ->willReturn($this->externalReference);
-
-        $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->with($this->externalReference)
-            ->willReturn($this->companyBusinessUnitTransferMock);
-
-        $this->companyBusinessUnitTransferMock->expects($this->atLeastOnce())
-            ->method('toArray')
-            ->willReturn([]);
-
-        $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByExternalReference(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock
-            )
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testFindCompanyBusinessUnitByExternalReferenceNotFound(): void
-    {
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock->expects($this->atLeastOnce())
-            ->method('getExternalReference')
-            ->willReturn($this->externalReference);
-
-        $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->with($this->externalReference)
-            ->willReturn(null);
-
-        $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByExternalReference(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock
             )
         );
     }
