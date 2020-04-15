@@ -178,7 +178,7 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
     /**
      * @return void
      */
-    public function testFindCompanyBusinessUnitByExternalReference(): void
+    public function testFindByExternalReference(): void
     {
         $this->companyBusinessUnitsRestApiBusinessFactoryMock->expects($this->atLeastOnce())
             ->method('createCompanyBusinessUnitReader')
