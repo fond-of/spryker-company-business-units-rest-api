@@ -97,7 +97,7 @@ class CompanyBusinessUnitsWriterTest extends Unit
     protected $errorDetail;
 
     /**
-     * @var int
+     * @var string
      */
     protected $id;
 
@@ -160,7 +160,7 @@ class CompanyBusinessUnitsWriterTest extends Unit
 
         $this->errorDetail = 'detail';
 
-        $this->id = 1;
+        $this->id = '0beee3ec-8ee2-11ea-bc55-0242ac130003';
 
         $this->companyBusinessUnitsWriter = new CompanyBusinessUnitsWriter(
             $this->restResourceBuilderInterfaceMock,
