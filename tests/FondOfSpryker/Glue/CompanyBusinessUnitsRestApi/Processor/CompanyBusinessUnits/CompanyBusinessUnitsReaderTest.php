@@ -55,11 +55,6 @@ class CompanyBusinessUnitsReaderTest extends Unit
     protected $restResourceInterfaceMock;
 
     /**
-     * @var string
-     */
-    protected $id;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
     protected $companyBusinessUnitResponseTransferMock;
@@ -70,11 +65,6 @@ class CompanyBusinessUnitsReaderTest extends Unit
     protected $restCompanyBusinessUnitsResponseAttributesTransferMock;
 
     /**
-     * @var string
-     */
-    protected $externalReference;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsErrorTransfer
      */
     protected $restCompanyBusinessUnitsErrorTransferMock;
@@ -83,6 +73,11 @@ class CompanyBusinessUnitsReaderTest extends Unit
      * @var array
      */
     protected $restCompanyBusinessUnitsErrorTransferMocks;
+
+    /**
+     * @var string
+     */
+    protected $externalReference;
 
     /**
      * @var string
@@ -98,6 +93,11 @@ class CompanyBusinessUnitsReaderTest extends Unit
      * @var int
      */
     protected $errorStatus;
+
+    /**
+     * @var string
+     */
+    protected $id;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface
@@ -163,8 +163,6 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->id = 'c6ad97f6-8ee1-11ea-bc55-0242ac130003';
-
         $this->companyBusinessUnitResponseTransferMock = $this->getMockBuilder(CompanyBusinessUnitResponseTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -173,7 +171,21 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->externalReference = 'external-reference';
+        $this->companyBusinessUnitsMapperInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsMapperInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->restUserTransferMock = $this->getMockBuilder(RestUserTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyBusinessUnitTransferMock = $this->getMockBuilder(CompanyBusinessUnitTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->restCompanyBusinessUnitsErrorTransferMocks = [
             $this->restCompanyBusinessUnitsErrorTransferMock,
@@ -185,23 +197,11 @@ class CompanyBusinessUnitsReaderTest extends Unit
 
         $this->errorDetail = 'detail';
 
-        $this->companyBusinessUnitsMapperInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsMapperInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->id = 'c6ad97f6-8ee1-11ea-bc55-0242ac130003';
 
-        $this->restUserTransferMock = $this->getMockBuilder(RestUserTransfer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->externalReference = 'external-reference';
 
         $this->surrogateIdentifier = 1;
-
-        $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->companyBusinessUnitTransferMock = $this->getMockBuilder(CompanyBusinessUnitTransfer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $this->companyBusinessUnits = new ArrayObject([
             $this->companyBusinessUnitTransferMock,
@@ -264,8 +264,8 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->with($this->restResourceInterfaceMock)
             ->willReturnSelf();
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitCollectionByIdCustomer(
                 $this->restRequestInterfaceMock
             )
@@ -343,8 +343,8 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->with($this->restResourceInterfaceMock)
             ->willReturnSelf();
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
@@ -373,8 +373,8 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->with($this->restResponseInterfaceMock)
             ->willReturn($this->restResponseInterfaceMock);
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
@@ -411,8 +411,8 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->with($this->restResponseInterfaceMock)
             ->willReturn($this->restResponseInterfaceMock);
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )
@@ -469,8 +469,8 @@ class CompanyBusinessUnitsReaderTest extends Unit
             ->with($this->restResponseInterfaceMock)
             ->willReturn($this->restResponseInterfaceMock);
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsReader->findCompanyBusinessUnitByUuid(
                 $this->restRequestInterfaceMock
             )

@@ -44,8 +44,6 @@ class CompanyBusinessUnitsCompanyUsersResourceRelationshipPluginTest extends Uni
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->resources = [];
-
         $this->restRequestInterfaceMock = $this->getMockBuilder(RestRequestInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -53,6 +51,8 @@ class CompanyBusinessUnitsCompanyUsersResourceRelationshipPluginTest extends Uni
         $this->companyBusinessUnitsResourceRelationshipExpanderInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitsResourceRelationshipExpanderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->resources = [];
 
         $this->companyBusinessUnitsCompanyUsersResourceRelationshipPlugin = new class (
             $this->companyBusinessUnitsRestApiFactoryMock

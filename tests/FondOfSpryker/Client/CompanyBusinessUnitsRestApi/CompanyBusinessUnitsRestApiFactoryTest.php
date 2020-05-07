@@ -4,7 +4,7 @@ namespace FondOfSpryker\Client\CompanyBusinessUnitsRestApi;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Dependency\Client\CompanyBusinessUnitsRestApiToZedRequestClientInterface;
-use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Zed\CompanyBusinessUnitsRestApiStubInterface;
+use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\Zed\CompanyBusinessUnitsRestApiStub;
 use Spryker\Client\Kernel\Container;
 
 class CompanyBusinessUnitsRestApiFactoryTest extends Unit
@@ -58,7 +58,7 @@ class CompanyBusinessUnitsRestApiFactoryTest extends Unit
             ->willReturn($this->companyBusinessUnitsRestApiToZedRequestClientInterfaceMock);
 
         $this->assertInstanceOf(
-            CompanyBusinessUnitsRestApiStubInterface::class,
+            CompanyBusinessUnitsRestApiStub::class,
             $this->companyBusinessUnitsRestApiFactory->createZedCompanyBusinessUnitsRestApiStub()
         );
     }

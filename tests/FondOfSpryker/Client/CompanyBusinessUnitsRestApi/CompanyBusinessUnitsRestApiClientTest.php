@@ -93,8 +93,8 @@ class CompanyBusinessUnitsRestApiClientTest extends Unit
             ->with($this->companyBusinessUnitTransferMock)
             ->willReturn($this->companyBusinessUnitResponseTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitResponseTransfer::class,
+        $this->assertSame(
+            $this->companyBusinessUnitResponseTransferMock,
             $this->companyBusinessUnitsRestApiClient->findCompanyBusinessUnitByUuid(
                 $this->companyBusinessUnitTransferMock
             )
@@ -115,8 +115,8 @@ class CompanyBusinessUnitsRestApiClientTest extends Unit
             ->with($this->customerTransferMock)
             ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitCollectionTransfer::class,
+        $this->assertSame(
+            $this->companyBusinessUnitCollectionTransferMock,
             $this->companyBusinessUnitsRestApiClient->findCompanyBusinessUnitCollectionByIdCustomer(
                 $this->customerTransferMock
             )

@@ -40,8 +40,8 @@ class CompanyBusinessUnitsResourceRoutePluginTest extends Unit
             ->method('addGet')
             ->willReturn($this->resourceRouteCollectionInterfaceMock);
 
-        $this->assertInstanceOf(
-            ResourceRouteCollectionInterface::class,
+        $this->assertSame(
+            $this->resourceRouteCollectionInterfaceMock,
             $this->companyBusinessUnitsResourceRoutePlugin->configure(
                 $this->resourceRouteCollectionInterfaceMock
             )

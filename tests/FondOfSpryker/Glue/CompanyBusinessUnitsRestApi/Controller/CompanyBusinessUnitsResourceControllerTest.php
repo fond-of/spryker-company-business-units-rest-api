@@ -59,8 +59,6 @@ class CompanyBusinessUnitsResourceControllerTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->id = 'id';
-
         $this->companyBusinessUnitsRestApiFactoryMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -72,6 +70,8 @@ class CompanyBusinessUnitsResourceControllerTest extends Unit
         $this->restResponseInterfaceMock = $this->getMockBuilder(RestResponseInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->id = 'id';
 
         $this->companyBusinessUnitsResourceController = new class (
             $this->companyBusinessUnitsRestApiFactoryMock
@@ -121,8 +121,8 @@ class CompanyBusinessUnitsResourceControllerTest extends Unit
             ->with($this->restRequestInterfaceMock)
             ->willReturn($this->restResponseInterfaceMock);
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsResourceController->getAction(
                 $this->restRequestInterfaceMock
             )
@@ -151,8 +151,8 @@ class CompanyBusinessUnitsResourceControllerTest extends Unit
             ->with($this->restRequestInterfaceMock)
             ->willReturn($this->restResponseInterfaceMock);
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->companyBusinessUnitsResourceController->getAction(
                 $this->restRequestInterfaceMock
             )

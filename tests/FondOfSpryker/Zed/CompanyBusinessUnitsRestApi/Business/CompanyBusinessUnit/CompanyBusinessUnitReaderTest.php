@@ -116,7 +116,7 @@ class CompanyBusinessUnitReaderTest extends Unit
 
         $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
             ->method('findCompanyBusinessUnitByUuid')
-            ->with($this->companyBusinessUnitTransferMock)
+            ->with($this->uuid)
             ->willReturn($this->companyBusinessUnitTransferMock);
 
         $companyBusinessUnitResponseTransfer = $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(

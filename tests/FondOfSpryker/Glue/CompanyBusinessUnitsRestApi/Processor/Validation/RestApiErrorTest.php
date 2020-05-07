@@ -36,10 +36,10 @@ class RestApiErrorTest extends Unit
     {
         $this->restResponseInterfaceMock->expects($this->atLeastOnce())
             ->method('addError')
-            ->willReturn($this->restResponseInterfaceMock);
+            ->willReturnSelf();
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->restApiError->addUuidMissingError(
                 $this->restResponseInterfaceMock
             )
@@ -53,10 +53,10 @@ class RestApiErrorTest extends Unit
     {
         $this->restResponseInterfaceMock->expects($this->atLeastOnce())
             ->method('addError')
-            ->willReturn($this->restResponseInterfaceMock);
+            ->willReturnSelf();
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->restApiError->addCompanyBusinessUnitNotFoundError(
                 $this->restResponseInterfaceMock
             )
@@ -70,10 +70,10 @@ class RestApiErrorTest extends Unit
     {
         $this->restResponseInterfaceMock->expects($this->atLeastOnce())
             ->method('addError')
-            ->willReturn($this->restResponseInterfaceMock);
+            ->willReturnSelf();
 
-        $this->assertInstanceOf(
-            RestResponseInterface::class,
+        $this->assertSame(
+            $this->restResponseInterfaceMock,
             $this->restApiError->addCompanyBusinessUnitNoPermissionError(
                 $this->restResponseInterfaceMock
             )

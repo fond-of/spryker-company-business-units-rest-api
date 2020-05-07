@@ -4,10 +4,10 @@ namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpanderInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapper;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReader;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpander;
+use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiError;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 
 class CompanyBusinessUnitsRestApiFactoryTest extends Unit
@@ -90,7 +90,7 @@ class CompanyBusinessUnitsRestApiFactoryTest extends Unit
     public function testCreateCompanyBusinessUnitsReader(): void
     {
         $this->assertInstanceOf(
-            CompanyBusinessUnitsReaderInterface::class,
+            CompanyBusinessUnitsReader::class,
             $this->companyBusinessUnitsRestApiFactory->createCompanyBusinessUnitsReader()
         );
     }
@@ -101,7 +101,7 @@ class CompanyBusinessUnitsRestApiFactoryTest extends Unit
     public function testCreateRestApiError(): void
     {
         $this->assertInstanceOf(
-            RestApiErrorInterface::class,
+            RestApiError::class,
             $this->companyBusinessUnitsRestApiFactory->createRestApiError()
         );
     }
@@ -112,7 +112,7 @@ class CompanyBusinessUnitsRestApiFactoryTest extends Unit
     public function testCreateCompanyBusinessUnitsResourceRelationshipExpander(): void
     {
         $this->assertInstanceOf(
-            CompanyBusinessUnitsResourceRelationshipExpanderInterface::class,
+            CompanyBusinessUnitsResourceRelationshipExpander::class,
             $this->companyBusinessUnitsRestApiFactory->createCompanyBusinessUnitsResourceRelationshipExpander()
         );
     }
@@ -123,7 +123,7 @@ class CompanyBusinessUnitsRestApiFactoryTest extends Unit
     public function testCreateCompanyBusinessUnitsMapper(): void
     {
         $this->assertInstanceOf(
-            CompanyBusinessUnitsMapperInterface::class,
+            CompanyBusinessUnitsMapper::class,
             $this->companyBusinessUnitsRestApiFactory->createCompanyBusinessUnitsMapper()
         );
     }
