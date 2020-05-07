@@ -102,8 +102,8 @@ class GatewayControllerTest extends Unit
             ->with($this->companyBusinessUnitTransferMock)
             ->willReturn($this->companyBusinessUnitResponseTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitResponseTransfer::class,
+        $this->assertEquals(
+            $this->companyBusinessUnitResponseTransferMock,
             $this->gatewayController->findCompanyBusinessUnitByUuidAction(
                 $this->companyBusinessUnitTransferMock
             )
@@ -120,8 +120,8 @@ class GatewayControllerTest extends Unit
             ->with($this->customerTransferMock)
             ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitCollectionTransfer::class,
+        $this->assertEquals(
+            $this->companyBusinessUnitCollectionTransferMock,
             $this->gatewayController->findCompanyBusinessUnitCollectionByIdCustomerAction(
                 $this->customerTransferMock
             )

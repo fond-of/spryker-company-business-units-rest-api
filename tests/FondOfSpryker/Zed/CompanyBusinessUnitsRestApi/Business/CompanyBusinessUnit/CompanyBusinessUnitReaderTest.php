@@ -5,15 +5,13 @@ namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusiness
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepositoryInterface;
 use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
-use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 
 class CompanyBusinessUnitReaderTest extends Unit
 {
     /**
-     * @var \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitReader
+     * @var \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitReaderInterface
      */
     protected $companyBusinessUnitReader;
 
@@ -21,16 +19,6 @@ class CompanyBusinessUnitReaderTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepositoryInterface
      */
     protected $companyBusinessUnitsRestApiRepositoryInterfaceMock;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer
-     */
-    protected $restCompanyBusinessUnitsRequestAttributesTransferMock;
-
-    /**
-     * @var string
-     */
-    protected $externalReference;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitTransfer
@@ -43,14 +31,14 @@ class CompanyBusinessUnitReaderTest extends Unit
     protected $customerTransferMock;
 
     /**
-     * @var int
-     */
-    protected $idCustomer;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
     protected $companyBusinessUnitCollectionTransferMock;
+
+    /**
+     * @var int
+     */
+    protected $idCustomer;
 
     /**
      * @var string
@@ -66,12 +54,6 @@ class CompanyBusinessUnitReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock = $this->getMockBuilder(RestCompanyBusinessUnitsRequestAttributesTransfer::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->externalReference = 'external-reference';
-
         $this->companyBusinessUnitTransferMock = $this->getMockBuilder(CompanyBusinessUnitTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -80,13 +62,13 @@ class CompanyBusinessUnitReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->idCustomer = 1;
-
         $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->uuid = 'uuid';
+
+        $this->idCustomer = 1;
 
         $this->companyBusinessUnitReader = new CompanyBusinessUnitReader(
             $this->companyBusinessUnitsRestApiRepositoryInterfaceMock
@@ -111,8 +93,8 @@ class CompanyBusinessUnitReaderTest extends Unit
             ->with($this->idCustomer)
             ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitCollectionTransfer::class,
+        $this->assertEquals(
+            $this->companyBusinessUnitCollectionTransferMock,
             $this->companyBusinessUnitReader->findCompanyBusinessUnitCollectionByIdCustomer(
                 $this->customerTransferMock
             )
@@ -134,13 +116,17 @@ class CompanyBusinessUnitReaderTest extends Unit
 
         $this->companyBusinessUnitsRestApiRepositoryInterfaceMock->expects($this->atLeastOnce())
             ->method('findCompanyBusinessUnitByUuid')
+            ->with($this->companyBusinessUnitTransferMock)
             ->willReturn($this->companyBusinessUnitTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
-                $this->companyBusinessUnitTransferMock
-            )
+        $companyBusinessUnitResponseTransfer = $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
+            $this->companyBusinessUnitTransferMock
+        );
+
+        $this->assertTrue($companyBusinessUnitResponseTransfer->getIsSuccessful());
+        $this->assertEquals(
+            $this->companyBusinessUnitTransferMock,
+            $companyBusinessUnitResponseTransfer->getCompanyBusinessUnitTransfer()
         );
     }
 
@@ -161,11 +147,14 @@ class CompanyBusinessUnitReaderTest extends Unit
             ->method('findCompanyBusinessUnitByUuid')
             ->willReturn(null);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitResponseTransfer::class,
-            $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
-                $this->companyBusinessUnitTransferMock
-            )
+        $companyBusinessUnitResponseTransfer = $this->companyBusinessUnitReader->findCompanyBusinessUnitByUuid(
+            $this->companyBusinessUnitTransferMock
+        );
+
+        $this->assertFalse($companyBusinessUnitResponseTransfer->getIsSuccessful());
+        $this->assertEquals(
+            null,
+            $companyBusinessUnitResponseTransfer->getCompanyBusinessUnitTransfer()
         );
     }
 }

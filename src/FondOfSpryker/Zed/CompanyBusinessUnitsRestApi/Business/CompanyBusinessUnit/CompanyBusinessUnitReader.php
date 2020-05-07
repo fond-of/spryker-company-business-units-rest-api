@@ -33,11 +33,9 @@ class CompanyBusinessUnitReader implements CompanyBusinessUnitReaderInterface
     ): CompanyBusinessUnitCollectionTransfer {
         $customerTransfer->requireIdCustomer();
 
-        $companyBusinessUnitCollectionTransfer = $this->companyBusinessUnitsRestApiRepository->findCompanyBusinessUnitCollectionByIdCustomer(
+        return $this->companyBusinessUnitsRestApiRepository->findCompanyBusinessUnitCollectionByIdCustomer(
             $customerTransfer->getIdCustomer()
         );
-
-        return $companyBusinessUnitCollectionTransfer;
     }
 
     /**

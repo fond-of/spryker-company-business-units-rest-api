@@ -9,18 +9,22 @@ use Generated\Shared\Transfer\SpyCompanyBusinessUnitEntityTransfer;
 class CompanyBusinessUnitMapper implements CompanyBusinessUnitMapperInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\SpyCompanyRoleEntityTransfer[] $spyCompanyRoleEntityTransfers
+     * @param \Generated\Shared\Transfer\SpyCompanyBusinessUnitEntityTransfer[] $spyCompanyBusinessUnitEntityTransfers
      * @param \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
     public function mapEntityTransfersToTransfer(
-        array $spyCompanyRoleEntityTransfers,
+        array $spyCompanyBusinessUnitEntityTransfers,
         CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer
     ): CompanyBusinessUnitCollectionTransfer {
-        foreach ($spyCompanyRoleEntityTransfers as $spyCompanyRoleEntityTransfer) {
+        foreach ($spyCompanyBusinessUnitEntityTransfers as $spyCompanyBusinessUnitEntityTransfer) {
             $companyBusinessUnitTransfer = new CompanyBusinessUnitTransfer();
-            $companyBusinessUnitTransfer = $this->mapEntityTransferToTransfer($spyCompanyRoleEntityTransfer, $companyBusinessUnitTransfer);
+
+            $companyBusinessUnitTransfer = $this->mapEntityTransferToTransfer(
+                $spyCompanyBusinessUnitEntityTransfer,
+                $companyBusinessUnitTransfer
+            );
 
             $companyBusinessUnitCollectionTransfer->addCompanyBusinessUnit($companyBusinessUnitTransfer);
         }
@@ -38,6 +42,9 @@ class CompanyBusinessUnitMapper implements CompanyBusinessUnitMapperInterface
         SpyCompanyBusinessUnitEntityTransfer $spyCompanyBusinessUnitEntityTransfer,
         CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
     ): CompanyBusinessUnitTransfer {
-        return $companyBusinessUnitTransfer->fromArray($spyCompanyBusinessUnitEntityTransfer->toArray(), true);
+        return $companyBusinessUnitTransfer->fromArray(
+            $spyCompanyBusinessUnitEntityTransfer->toArray(),
+            true
+        );
     }
 }

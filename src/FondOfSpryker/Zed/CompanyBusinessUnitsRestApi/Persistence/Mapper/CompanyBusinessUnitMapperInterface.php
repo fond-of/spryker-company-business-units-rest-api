@@ -9,13 +9,13 @@ use Generated\Shared\Transfer\SpyCompanyBusinessUnitEntityTransfer;
 interface CompanyBusinessUnitMapperInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\SpyCompanyRoleEntityTransfer[] $spyCompanyRoleEntityTransfers
+     * @param \Generated\Shared\Transfer\SpyCompanyBusinessUnitEntityTransfer[] $spyCompanyBusinessUnitEntityTransfers
      * @param \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
     public function mapEntityTransfersToTransfer(
-        array $spyCompanyRoleEntityTransfers,
+        array $spyCompanyBusinessUnitEntityTransfers,
         CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer
     ): CompanyBusinessUnitCollectionTransfer;
 

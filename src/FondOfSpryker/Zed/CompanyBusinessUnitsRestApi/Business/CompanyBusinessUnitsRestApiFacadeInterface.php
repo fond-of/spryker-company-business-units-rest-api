@@ -12,20 +12,6 @@ interface CompanyBusinessUnitsRestApiFacadeInterface
 {
     /**
      * Specification:
-     * - Retrieves company business unit information by external reference.
-     *
-     * @api
-     *
-     * @param string $externalReference
-     *
-     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer|null
-     */
-    public function findByExternalReference(
-        string $externalReference
-    ): ?CompanyBusinessUnitTransfer;
-
-    /**
-     * Specification:
      * - Retrieves company business unit information by uuid.
      *
      * @api
@@ -51,20 +37,4 @@ interface CompanyBusinessUnitsRestApiFacadeInterface
     public function findCompanyBusinessUnitCollectionByIdCustomer(
         CustomerTransfer $customerTransfer
     ): CompanyBusinessUnitCollectionTransfer;
-
-    /**
-     * Specification:
-     * - Map to company business unit transfer
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
-     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyBusinessUnitTransfer
-     */
-    public function mapToCompanyBusinessUnit(
-        RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer,
-        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
-    ): CompanyBusinessUnitTransfer;
 }

@@ -22,12 +22,4 @@ class CompanyBusinessUnitsRestApiBusinessFactory extends AbstractBusinessFactory
             $this->getRepository()
         );
     }
-
-    /**
-     * @return \FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitMapperInterface
-     */
-    public function createCompanyBusinessUnitMapper(): CompanyBusinessUnitMapperInterface
-    {
-        return new CompanyBusinessUnitMapper();
-    }
 }

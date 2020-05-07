@@ -3,15 +3,11 @@
 namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business;
 
 use Codeception\Test\Unit;
-use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitMapperInterface;
 use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitReaderInterface;
-use FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepository;
 use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
 
 class CompanyBusinessUnitsRestApiFacadeTest extends Unit
 {
@@ -24,11 +20,6 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnitsRestApiBusinessFactory
      */
     protected $companyBusinessUnitsRestApiBusinessFactoryMock;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer
-     */
-    protected $restCompanyBusinessUnitsRequestAttributesTransferMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitReaderInterface
@@ -46,29 +37,14 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
     protected $companyBusinessUnitTransferMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Business\CompanyBusinessUnit\CompanyBusinessUnitMapperInterface
-     */
-    protected $companyBusinessUnitMapperInterfaceMock;
-
-    /**
-     * @var string
-     */
-    protected $externalReference;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Persistence\CompanyBusinessUnitsRestApiRepository
-     */
-    protected $companyBusinessUnitsRestApiRepositoryMock;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CustomerTransfer
      */
     protected $customerTransferMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
-    protected $restCompanyBusinessUnitsResponseTransferMock;
+    protected $companyBusinessUnitCollectionTransferMock;
 
     /**
      * @return void
@@ -76,14 +52,6 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
     protected function _before(): void
     {
         $this->companyBusinessUnitsRestApiBusinessFactoryMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiBusinessFactory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->companyBusinessUnitsRestApiRepositoryMock = $this->getMockBuilder(CompanyBusinessUnitsRestApiRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->restCompanyBusinessUnitsRequestAttributesTransferMock = $this->getMockBuilder(RestCompanyBusinessUnitsRequestAttributesTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -95,27 +63,20 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyBusinessUnitMapperInterfaceMock = $this->getMockBuilder(CompanyBusinessUnitMapperInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->companyBusinessUnitTransferMock = $this->getMockBuilder(CompanyBusinessUnitTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->externalReference = 'external-reference';
 
         $this->customerTransferMock = $this->getMockBuilder(CustomerTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->restCompanyBusinessUnitsResponseTransferMock = $this->getMockBuilder(RestCompanyBusinessUnitsResponseTransfer::class)
+        $this->companyBusinessUnitCollectionTransferMock = $this->getMockBuilder(CompanyBusinessUnitCollectionTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->companyBusinessUnitsRestApiFacade = new CompanyBusinessUnitsRestApiFacade();
         $this->companyBusinessUnitsRestApiFacade->setFactory($this->companyBusinessUnitsRestApiBusinessFactoryMock);
-        $this->companyBusinessUnitsRestApiFacade->setRepository($this->companyBusinessUnitsRestApiRepositoryMock);
     }
 
     /**
@@ -129,14 +90,13 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
 
         $this->companyBusinessUnitReaderInterfaceMock->expects($this->atLeastOnce())
             ->method('findCompanyBusinessUnitByUuid')
+            ->with($this->companyBusinessUnitTransferMock)
             ->willReturn($this->companyBusinessUnitResponseTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitResponseTransfer::class,
-            $this->companyBusinessUnitsRestApiFacade->findCompanyBusinessUnitByUuid(
-                $this->companyBusinessUnitTransferMock
-            )
-        );
+        $companyBusinessUnitResponseTransfer = $this->companyBusinessUnitsRestApiFacade
+            ->findCompanyBusinessUnitByUuid($this->companyBusinessUnitTransferMock);
+
+        $this->assertEquals($this->companyBusinessUnitResponseTransferMock, $companyBusinessUnitResponseTransfer);
     }
 
     /**
@@ -144,52 +104,18 @@ class CompanyBusinessUnitsRestApiFacadeTest extends Unit
      */
     public function testFindCompanyBusinessUnitCollectionByIdCustomer(): void
     {
-        $this->assertInstanceOf(
-            CompanyBusinessUnitCollectionTransfer::class,
-            $this->companyBusinessUnitsRestApiFacade->findCompanyBusinessUnitCollectionByIdCustomer(
-                $this->customerTransferMock
-            )
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testMapToCompanyBusinessUnit(): void
-    {
         $this->companyBusinessUnitsRestApiBusinessFactoryMock->expects($this->atLeastOnce())
-            ->method('createCompanyBusinessUnitMapper')
-            ->willReturn($this->companyBusinessUnitMapperInterfaceMock);
+            ->method('createCompanyBusinessUnitReader')
+            ->willReturn($this->companyBusinessUnitReaderInterfaceMock);
 
-        $this->companyBusinessUnitMapperInterfaceMock->expects($this->atLeastOnce())
-            ->method('mapToCompanyBusinessUnit')
-            ->with($this->restCompanyBusinessUnitsRequestAttributesTransferMock)
-            ->willReturn($this->companyBusinessUnitTransferMock);
+        $this->companyBusinessUnitReaderInterfaceMock->expects($this->atLeastOnce())
+            ->method('findCompanyBusinessUnitCollectionByIdCustomer')
+            ->with($this->customerTransferMock)
+            ->willReturn($this->companyBusinessUnitCollectionTransferMock);
 
-        $this->assertInstanceOf(
-            CompanyBusinessUnitTransfer::class,
-            $this->companyBusinessUnitsRestApiFacade->mapToCompanyBusinessUnit(
-                $this->restCompanyBusinessUnitsRequestAttributesTransferMock,
-                $this->companyBusinessUnitTransferMock
-            )
-        );
-    }
+        $companyBusinessUnitCollectionTransfer = $this->companyBusinessUnitsRestApiFacade
+            ->findCompanyBusinessUnitCollectionByIdCustomer($this->customerTransferMock);
 
-    /**
-     * @return void
-     */
-    public function testFindByExternalReference(): void
-    {
-        $this->companyBusinessUnitsRestApiRepositoryMock->expects($this->atLeastOnce())
-            ->method('findCompanyBusinessUnitByExternalReference')
-            ->with($this->externalReference)
-            ->willReturn($this->companyBusinessUnitTransferMock);
-
-        $this->assertInstanceOf(
-            CompanyBusinessUnitTransfer::class,
-            $this->companyBusinessUnitsRestApiFacade->findByExternalReference(
-                $this->externalReference
-            )
-        );
+        $this->assertEquals($this->companyBusinessUnitCollectionTransferMock, $companyBusinessUnitCollectionTransfer);
     }
 }
