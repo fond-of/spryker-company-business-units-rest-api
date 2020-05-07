@@ -23,9 +23,7 @@ class CompanyBusinessUnitsResourceRoutePlugin extends AbstractPlugin implements 
         ResourceRouteCollectionInterface $resourceRouteCollection
     ): ResourceRouteCollectionInterface {
         $resourceRouteCollection
-            ->addGet(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_GET, true)
-            ->addPatch(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_PATCH, true)
-            ->addPost(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_POST, true);
+            ->addGet(CompanyBusinessUnitsRestApiConfig::ACTION_COMPANY_BUSINESS_UNITS_GET, true);
 
         return $resourceRouteCollection;
     }

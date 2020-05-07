@@ -24,8 +24,6 @@ class CompanyBusinessUnitsResourceRoutePluginTest extends Unit
      */
     protected function _before(): void
     {
-        parent::_before();
-
         $this->resourceRouteCollectionInterfaceMock = $this->getMockBuilder(ResourceRouteCollectionInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -42,16 +40,8 @@ class CompanyBusinessUnitsResourceRoutePluginTest extends Unit
             ->method('addGet')
             ->willReturn($this->resourceRouteCollectionInterfaceMock);
 
-        $this->resourceRouteCollectionInterfaceMock->expects($this->atLeastOnce())
-            ->method('addPatch')
-            ->willReturn($this->resourceRouteCollectionInterfaceMock);
-
-        $this->resourceRouteCollectionInterfaceMock->expects($this->atLeastOnce())
-            ->method('addPost')
-            ->willReturn($this->resourceRouteCollectionInterfaceMock);
-
-        $this->assertInstanceOf(
-            ResourceRouteCollectionInterface::class,
+        $this->assertSame(
+            $this->resourceRouteCollectionInterfaceMock,
             $this->companyBusinessUnitsResourceRoutePlugin->configure(
                 $this->resourceRouteCollectionInterfaceMock
             )

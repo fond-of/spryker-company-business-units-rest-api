@@ -2,9 +2,10 @@
 
 namespace FondOfSpryker\Zed\CompanyBusinessUnitsRestApi\Communication\Controller;
 
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
 
 /**
@@ -13,32 +14,24 @@ use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
 class GatewayController extends AbstractGatewayController
 {
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
-    public function findCompanyBusinessUnitByExternalReferenceAction(RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer): RestCompanyBusinessUnitsResponseTransfer
-    {
-        return $this->getFacade()->findCompanyBusinessUnitByExternalReference($restCompanyBusinessUnitsRequestAttributesTransfer);
+    public function findCompanyBusinessUnitByUuidAction(
+        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+    ): CompanyBusinessUnitResponseTransfer {
+        return $this->getFacade()->findCompanyBusinessUnitByUuid($companyBusinessUnitTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
-    public function createAction(RestCompanyBusinessUnitsRequestAttributesTransfer $restCompanyBusinessUnitsRequestAttributesTransfer): RestCompanyBusinessUnitsResponseTransfer
-    {
-        return $this->getFacade()->create($restCompanyBusinessUnitsRequestAttributesTransfer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
-     */
-    public function updateAction(RestCompanyBusinessUnitsRequestTransfer $restCompanyBusinessUnitsRequestTransfer): RestCompanyBusinessUnitsResponseTransfer
-    {
-        return $this->getFacade()->update($restCompanyBusinessUnitsRequestTransfer);
+    public function findCompanyBusinessUnitCollectionByIdCustomerAction(
+        CustomerTransfer $customerTransfer
+    ): CompanyBusinessUnitCollectionTransfer {
+        return $this->getFacade()->findCompanyBusinessUnitCollectionByIdCustomer($customerTransfer);
     }
 }

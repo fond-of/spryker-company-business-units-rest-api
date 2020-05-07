@@ -5,9 +5,11 @@ namespace FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusine
 use FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiConfig;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer;
-use Generated\Shared\Transfer\RestErrorMessageTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
+use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseAttributesTransfer;
+use Generated\Shared\Transfer\RestUserTransfer;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface;
 use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
@@ -30,17 +32,25 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
     protected $restApiError;
 
     /**
+     * @var \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface
+     */
+    protected $companyBusinessUnitsMapper;
+
+    /**
      * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface $restResourceBuilder
      * @param \FondOfSpryker\Client\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient
+     * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsMapperInterface $companyBusinessUnitsMapper
      * @param \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface $restApiError
      */
     public function __construct(
         RestResourceBuilderInterface $restResourceBuilder,
         CompanyBusinessUnitsRestApiClientInterface $companyBusinessUnitsRestApiClient,
+        CompanyBusinessUnitsMapperInterface $companyBusinessUnitsMapper,
         RestApiErrorInterface $restApiError
     ) {
         $this->restResourceBuilder = $restResourceBuilder;
         $this->companyBusinessUnitsRestApiClient = $companyBusinessUnitsRestApiClient;
+        $this->companyBusinessUnitsMapper = $companyBusinessUnitsMapper;
         $this->restApiError = $restApiError;
     }
 
@@ -49,65 +59,118 @@ class CompanyBusinessUnitsReader implements CompanyBusinessUnitsReaderInterface
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
-    public function findCompanyBusinessUnitByExternalReference(RestRequestInterface $restRequest): RestResponseInterface
+    public function findCompanyBusinessUnitCollectionByIdCustomer(RestRequestInterface $restRequest): RestResponseInterface
+    {
+        $restResponse = $this->restResourceBuilder->createRestResponse();
+
+        $customerTransfer = (new CustomerTransfer())
+            ->setIdCustomer($restRequest->getRestUser()->getSurrogateIdentifier());
+
+        $companyBusinessUnitCollectionTransfer = $this->companyBusinessUnitsRestApiClient
+            ->findCompanyBusinessUnitCollectionByIdCustomer($customerTransfer);
+
+        return $this->createCompanyBusinessUnitCollectionResponse(
+            $companyBusinessUnitCollectionTransfer,
+            $restResponse
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
+    protected function createCompanyBusinessUnitCollectionResponse(
+        CompanyBusinessUnitCollectionTransfer $companyBusinessUnitCollectionTransfer,
+        RestResponseInterface $restResponse
+    ): RestResponseInterface {
+        foreach ($companyBusinessUnitCollectionTransfer->getCompanyBusinessUnits() as $companyBusinessUnit) {
+            $this->createCompanyBusinessUnitResponse($companyBusinessUnit, $restResponse);
+        }
+
+        return $restResponse;
+    }
+
+    /**
+     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
+     *
+     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
+     */
+    public function findCompanyBusinessUnitByUuid(RestRequestInterface $restRequest): RestResponseInterface
     {
         $restResponse = $this->restResourceBuilder->createRestResponse();
 
         if (!$restRequest->getResource()->getId()) {
-            return $this->restApiError->addExternalReferenceMissingError($restResponse);
+            return $this->restApiError->addUuidMissingError($restResponse);
         }
 
-        $restCompanyBusinessUnitsRequestAttributesTransfer = new RestCompanyBusinessUnitsRequestAttributesTransfer();
-        $restCompanyBusinessUnitsRequestAttributesTransfer->setExternalReference($restRequest->getResource()->getId());
+        $companyBusinessUnitTransfer = (new CompanyBusinessUnitTransfer())
+            ->setUuid($restRequest->getResource()->getId());
 
-        $restCompanyBusinessUnitsResponseTransfer = $this->companyBusinessUnitsRestApiClient
-            ->findCompanyBusinessUnitByExternalReference($restCompanyBusinessUnitsRequestAttributesTransfer);
+        $restCompanyBusinessUnitResponseTransfer = $this->companyBusinessUnitsRestApiClient
+            ->findCompanyBusinessUnitByUuid($companyBusinessUnitTransfer);
 
-        if (!$restCompanyBusinessUnitsResponseTransfer->getIsSuccess()) {
-            return $this->createLoadCompanyBusinessUnitFailedErrorResponse($restCompanyBusinessUnitsResponseTransfer);
+        if (!$restCompanyBusinessUnitResponseTransfer->getIsSuccessful()) {
+            return $this->restApiError->addCompanyBusinessUnitNotFoundError($restResponse);
         }
 
-        return $this->createCompanyBusinessUnitLoadedResponse($restCompanyBusinessUnitsResponseTransfer);
+        if (!$this->isCompanyBusinessUnitAssignedToRestUser($companyBusinessUnitTransfer, $restRequest->getRestUser())) {
+            return $this->restApiError->addCompanyBusinessUnitNoPermissionError($restResponse);
+        }
+
+        return $this->createCompanyBusinessUnitResponse(
+            $restCompanyBusinessUnitResponseTransfer->getCompanyBusinessUnitTransfer(),
+            $restResponse
+        );
     }
 
     /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+     * @param \Generated\Shared\Transfer\RestUserTransfer $restUserTransfer
+     *
+     * @return bool
+     */
+    protected function isCompanyBusinessUnitAssignedToRestUser(
+        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer,
+        RestUserTransfer $restUserTransfer
+    ): bool {
+        $customerTransfer = (new CustomerTransfer())
+            ->setIdCustomer($restUserTransfer->getSurrogateIdentifier());
+
+        $companyBusinessUnitCollectionTransfer = $this->companyBusinessUnitsRestApiClient->findCompanyBusinessUnitCollectionByIdCustomer($customerTransfer);
+
+        foreach ($companyBusinessUnitCollectionTransfer->getCompanyBusinessUnits() as $companyBusinessUnit) {
+            if ($companyBusinessUnit->getUuid() === $companyBusinessUnitTransfer->getUuid()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface $restResponse
      *
      * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
      */
-    protected function createCompanyBusinessUnitLoadedResponse(
-        RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
+    protected function createCompanyBusinessUnitResponse(
+        CompanyBusinessUnitTransfer $companyBusinessUnitTransfer,
+        RestResponseInterface $restResponse
     ): RestResponseInterface {
-        $restCompanyBusinessUnitsResponseAttributesTransfer = $restCompanyBusinessUnitsResponseTransfer->getRestCompanyBusinessUnitsResponseAttributes();
+        $restCompanyBusinessUnitAttributeTransfer = $this->companyBusinessUnitsMapper
+            ->mapCompanyBusinessUnitTransferToRestCompanyBusinessUnitsResponseAttributesTransfer(
+                $companyBusinessUnitTransfer,
+                new RestCompanyBusinessUnitsResponseAttributesTransfer()
+            );
 
         $restResource = $this->restResourceBuilder->createRestResource(
             CompanyBusinessUnitsRestApiConfig::RESOURCE_COMPANY_BUSINESS_UNITS,
-            $restCompanyBusinessUnitsResponseAttributesTransfer->getExternalReference(),
-            $restCompanyBusinessUnitsResponseAttributesTransfer
+            $restCompanyBusinessUnitAttributeTransfer->getUuid(),
+            $restCompanyBusinessUnitAttributeTransfer
         );
 
-        return $this->restResourceBuilder
-            ->createRestResponse()
-            ->addResource($restResource);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
-    protected function createLoadCompanyBusinessUnitFailedErrorResponse(
-        RestCompanyBusinessUnitsResponseTransfer $restCompanyBusinessUnitsResponseTransfer
-    ): RestResponseInterface {
-        $restResponse = $this->restResourceBuilder->createRestResponse();
-
-        foreach ($restCompanyBusinessUnitsResponseTransfer->getErrors() as $restCompanyBusinessUnitsErrorTransfer) {
-            $restResponse->addError((new RestErrorMessageTransfer())
-                ->setCode($restCompanyBusinessUnitsErrorTransfer->getCode())
-                ->setStatus($restCompanyBusinessUnitsErrorTransfer->getStatus())
-                ->setDetail($restCompanyBusinessUnitsErrorTransfer->getDetail()));
-        }
-
-        return $restResponse;
+        return $restResponse->addResource($restResource);
     }
 }

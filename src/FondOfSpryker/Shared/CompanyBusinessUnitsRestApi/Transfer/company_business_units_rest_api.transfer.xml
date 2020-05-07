@@ -3,12 +3,8 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
 
-    <transfer name="RestCompanyBusinessUnitsRequest">
-        <property name="id" type="string" />
-        <property name="restCompanyBusinessUnitsRequestAttributes" type="RestCompanyBusinessUnitsRequestAttributes" />
-    </transfer>
-
-    <transfer name="RestCompanyBusinessUnitsRequestAttributes">
+    <transfer name="RestCompanyBusinessUnitsResponseAttributes">
+        <property name="uuid" type="string" />
         <property name="name" type="string" />
         <property name="externalReference" type="string" />
         <property name="email" type="string" />
@@ -17,7 +13,7 @@
         <property name="bic" type="string" />
     </transfer>
 
-    <transfer name="RestCompanyBusinessUnitsResponseAttributes">
+    <transfer name="RestCompanyBusinessUnitsRequestAttributes">
         <property name="name" type="string" />
         <property name="externalReference" type="string" />
         <property name="email" type="string" />
@@ -37,5 +33,11 @@
         <property name="isSuccess" type="bool" />
         <property name="errors" type="RestCompanyBusinessUnitsError[]" singular="error" />
         <property name="restCompanyBusinessUnitsResponseAttributes" type="RestCompanyBusinessUnitsResponseAttributes" />
+    </transfer>
+
+    <transfer name="CompanyBusinessUnitResponse">
+        <property name="companyBusinessUnitTransfer" type="CompanyBusinessUnit"/>
+        <property name="isSuccessful" type="bool"/>
+        <property name="messages" type="ResponseMessage[]" singular="message"/>
     </transfer>
 </transfers>

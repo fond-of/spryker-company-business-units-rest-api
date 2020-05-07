@@ -33,11 +33,6 @@ class CompanyBusinessUnitsResourceRelationshipExpanderTest extends Unit
     protected $restResourceInterfaceMock;
 
     /**
-     * @var array
-     */
-    protected $resources;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface
      */
     protected $restRequestInterfaceMock;
@@ -63,6 +58,11 @@ class CompanyBusinessUnitsResourceRelationshipExpanderTest extends Unit
     protected $uuid;
 
     /**
+     * @var array
+     */
+    protected $resources;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -81,10 +81,6 @@ class CompanyBusinessUnitsResourceRelationshipExpanderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->resources = [
-            $this->restResourceInterfaceMock,
-        ];
-
         $this->restRequestInterfaceMock = $this->getMockBuilder(RestRequestInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -102,6 +98,10 @@ class CompanyBusinessUnitsResourceRelationshipExpanderTest extends Unit
             ->getMock();
 
         $this->uuid = 'uuid';
+
+        $this->resources = [
+            $this->restResourceInterfaceMock,
+        ];
 
         $this->companyBusinessUnitsResourceRelationshipExpander = new CompanyBusinessUnitsResourceRelationshipExpander(
             $this->restResourceBuilderInterface,

@@ -8,8 +8,6 @@ use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnit
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsReaderInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpander;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpanderInterface;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriter;
-use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriterInterface;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiError;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\Validation\RestApiErrorInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
@@ -30,18 +28,7 @@ class CompanyBusinessUnitsRestApiFactory extends AbstractFactory
         return new CompanyBusinessUnitsReader(
             $this->getResourceBuilder(),
             $this->getClient(),
-            $this->createRestApiError()
-        );
-    }
-
-    /**
-     * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsWriterInterface
-     */
-    public function createCompanyBusinessUnitsWriter(): CompanyBusinessUnitsWriterInterface
-    {
-        return new CompanyBusinessUnitsWriter(
-            $this->getResourceBuilder(),
-            $this->getClient(),
+            $this->createCompanyBusinessUnitsMapper(),
             $this->createRestApiError()
         );
     }

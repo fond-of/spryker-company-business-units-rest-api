@@ -19,14 +19,14 @@ class CompanyBusinessUnitsRestApiToZedRequestClientBridgeTest extends Unit
     protected $zedRequestClientInterfaceMock;
 
     /**
-     * @var string
-     */
-    protected $url;
-
-    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Kernel\Transfer\TransferInterface
      */
     protected $transferInterfaceMock;
+
+    /**
+     * @var string
+     */
+    protected $url;
 
     /**
      * @return void
@@ -39,11 +39,11 @@ class CompanyBusinessUnitsRestApiToZedRequestClientBridgeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->url = 'url';
-
         $this->transferInterfaceMock = $this->getMockBuilder(TransferInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->url = 'url';
 
         $this->companyBusinessUnitsRestApiToZedRequestClientBridge = new CompanyBusinessUnitsRestApiToZedRequestClientBridge(
             $this->zedRequestClientInterfaceMock
@@ -57,6 +57,7 @@ class CompanyBusinessUnitsRestApiToZedRequestClientBridgeTest extends Unit
     {
         $this->zedRequestClientInterfaceMock->expects($this->atLeastOnce())
             ->method('call')
+            ->with($this->url, $this->transferInterfaceMock)
             ->willReturn($this->transferInterfaceMock);
 
         $this->assertInstanceOf(

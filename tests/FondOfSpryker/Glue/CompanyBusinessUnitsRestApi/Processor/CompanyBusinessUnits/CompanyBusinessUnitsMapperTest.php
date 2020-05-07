@@ -54,8 +54,8 @@ class CompanyBusinessUnitsMapperTest extends Unit
             ->method('fromArray')
             ->willReturn($this->restCompanyBusinessUnitsResponseAttributesTransferMock);
 
-        $this->assertInstanceOf(
-            RestCompanyBusinessUnitsResponseAttributesTransfer::class,
+        $this->assertSame(
+            $this->restCompanyBusinessUnitsResponseAttributesTransferMock,
             $this->companyBusinessUnitsMapper->mapCompanyBusinessUnitTransferToRestCompanyBusinessUnitsResponseAttributesTransfer(
                 $this->companyBusinessUnitTransferMock,
                 $this->restCompanyBusinessUnitsResponseAttributesTransferMock
