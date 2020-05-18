@@ -6,7 +6,6 @@ use Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer;
 use Generated\Shared\Transfer\CompanyBusinessUnitTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
-use Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -16,13 +15,13 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements CompanyBusinessUnitsRestApiFacadeInterface
 {
     /**
-     * @inheritdoc
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $companyBusinessUnitTransfer
-     *
-     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
+     * {@inheritDoc}
      *
      * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
      */
     public function findCompanyBusinessUnitByUuid(
         CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
@@ -32,13 +31,13 @@ class CompanyBusinessUnitsRestApiFacade extends AbstractFacade implements Compan
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param \Generated\Shared\Transfer\RestCompanyBusinessUnitsRequestAttributesTransfer $companyBusinessUnitTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestCompanyBusinessUnitsResponseTransfer
+     * {@inheritDoc}
      *
      * @api
+     *
+     * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
      */
     public function findCompanyBusinessUnitCollectionByIdCustomer(
         CustomerTransfer $customerTransfer
