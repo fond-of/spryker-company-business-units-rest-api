@@ -14,13 +14,13 @@ use Spryker\Client\Kernel\AbstractClient;
 class CompanyBusinessUnitsRestApiClient extends AbstractClient implements CompanyBusinessUnitsRestApiClientInterface
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
+     *
+     * @api
      *
      * @param \Generated\Shared\Transfer\CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitResponseTransfer
-     *
-     * @api
      */
     public function findCompanyBusinessUnitByUuid(
         CompanyBusinessUnitTransfer $companyBusinessUnitTransfer
@@ -31,13 +31,13 @@ class CompanyBusinessUnitsRestApiClient extends AbstractClient implements Compan
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
+     *
+     * @api
      *
      * @param \Generated\Shared\Transfer\CustomerTransfer $customerTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyBusinessUnitCollectionTransfer
-     *
-     * @api
      */
     public function findCompanyBusinessUnitCollectionByIdCustomer(
         CustomerTransfer $customerTransfer
