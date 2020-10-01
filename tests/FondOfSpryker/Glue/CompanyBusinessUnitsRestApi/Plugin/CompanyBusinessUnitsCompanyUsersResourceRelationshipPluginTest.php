@@ -7,6 +7,7 @@ use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiCo
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiFactory;
 use FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\Processor\CompanyBusinessUnits\CompanyBusinessUnitsResourceRelationshipExpanderInterface;
 use Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface;
+use Spryker\Glue\Kernel\AbstractFactory;
 
 class CompanyBusinessUnitsCompanyUsersResourceRelationshipPluginTest extends Unit
 {
@@ -71,9 +72,9 @@ class CompanyBusinessUnitsCompanyUsersResourceRelationshipPluginTest extends Uni
             }
 
             /**
-             * @return \FondOfSpryker\Glue\CompanyBusinessUnitsRestApi\CompanyBusinessUnitsRestApiFactory
+             * @return \Spryker\Glue\Kernel\AbstractFactory
              */
-            public function getFactory(): CompanyBusinessUnitsRestApiFactory
+            protected function getFactory(): AbstractFactory
             {
                 return $this->companyBusinessUnitsRestApiFactory;
             }
